@@ -1,0 +1,1691 @@
+<!-- Declara que el documento utiliza el estándar HTML5. -->
+<!DOCTYPE html>
+<!-- Inicia la página e indica que el idioma principal es español. -->
+<html lang="es">
+<!-- Abre la sección de metadatos y estilos de la página. -->
+<head>
+  <!-- Configura UTF-8 para mostrar correctamente los caracteres en español. -->
+  <meta charset="UTF-8">
+  <!-- Adapta el ancho de la página al dispositivo móvil. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Define el color de la barra del navegador en dispositivos compatibles. -->
+  <meta name="theme-color" content="#f5f7f5">
+  <!-- Describe brevemente el contenido de la aplicación. -->
+  <meta name="description" content="Administra y organiza tu inventario de propiedades inmobiliarias.">
+  <!-- Define el título que aparece en la pestaña del navegador. -->
+  <title>Mi Patrimonio Inmobiliario</title>
+  <!-- Inicia las reglas CSS que definen la presentación de la aplicación. -->
+  <style>
+    /* Selecciona :root para aplicar los estilos que siguen. */
+    :root {
+      /* color-scheme: Configura el valor visual de esta propiedad. */
+      color-scheme: light;
+      /* --ink: Asigna un valor reutilizable del tema visual. */
+      --ink: #1c2a24;
+      /* --muted: Asigna un valor reutilizable del tema visual. */
+      --muted: #78827c;
+      /* --green: Asigna un valor reutilizable del tema visual. */
+      --green: #245b46;
+      /* --green-dark: Asigna un valor reutilizable del tema visual. */
+      --green-dark: #174432;
+      /* --green-soft: Asigna un valor reutilizable del tema visual. */
+      --green-soft: #eaf2ed;
+      /* --line: Asigna un valor reutilizable del tema visual. */
+      --line: #e9ede9;
+      /* --paper: Asigna un valor reutilizable del tema visual. */
+      --paper: #ffffff;
+      /* --canvas: Asigna un valor reutilizable del tema visual. */
+      --canvas: #f5f7f5;
+      /* --shadow: Asigna un valor reutilizable del tema visual. */
+      --shadow: 0 12px 34px rgba(30, 55, 42, .07);
+      /* font-family: Define la familia tipográfica preferida. */
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    /* Cierra la regla CSS o condición adaptable actual. */
+    }
+    /* box-sizing: Configura el valor visual de esta propiedad. */
+    * { box-sizing: border-box; }
+    /* margin: Define el espacio exterior. min-width: Establece el ancho mínimo del elemento. background: Define el fondo del elemento. color: Define el color del texto. */
+    body { margin: 0; min-width: 320px; background: var(--canvas); color: var(--ink); }
+    /* font: Configura el valor visual de esta propiedad. */
+    button, input, select, textarea { font: inherit; }
+    /* cursor: Define el cursor que aparece sobre el elemento. */
+    button { cursor: pointer; }
+    /* display: Define cómo se distribuyen los elementos internos. min-height: Establece la altura mínima. */
+    .app-shell { display: flex; min-height: 100vh; }
+    /* Selecciona .sidebar para aplicar los estilos que siguen. */
+    .sidebar {
+      /* position: Establece cómo se posiciona el elemento. inset: Establece simultáneamente los desplazamientos del elemento. z-index: Controla el orden de superposición. display: Define cómo se distribuyen los elementos internos. width: Define el ancho del elemento. */
+      position: fixed; inset: 0 auto 0 0; z-index: 5; display: flex; width: 246px;
+      /* flex-direction: Indica la dirección de distribución flexible. padding: Define el espacio interior. background: Define el fondo del elemento. border-right: Define el borde derecho del elemento. */
+      flex-direction: column; padding: 28px 18px 20px; background: #fff; border-right: 1px solid var(--line);
+    /* Cierra la regla CSS o condición adaptable actual. */
+    }
+    /* display: Define cómo se distribuyen los elementos internos. align-items: Alinea los elementos en el eje transversal. gap: Define la separación entre elementos. padding: Define el espacio interior. */
+    .brand { display: flex; align-items: center; gap: 12px; padding: 0 10px; }
+    /* display: Define cómo se distribuyen los elementos internos. width: Define el ancho del elemento. height: Define la altura del elemento. place-items: Configura el valor visual de esta propiedad. color: Define el color del texto. background: Define el fondo del elemento. border-radius: Redondea las esquinas. */
+    .brand-mark { display: grid; width: 42px; height: 42px; place-items: center; color: #fff; background: var(--green); border-radius: 13px; }
+    /* width: Define el ancho del elemento. height: Define la altura del elemento. */
+    .brand-mark svg { width: 23px; height: 23px; }
+    /* max-width: Limita el ancho máximo. font-size: Define el tamaño de la tipografía. font-weight: Define el grosor de la tipografía. line-height: Define la altura de línea del texto. letter-spacing: Ajusta el espacio entre caracteres. */
+    .brand-name { max-width: 150px; font-size: 14px; font-weight: 750; line-height: 1.3; letter-spacing: -.25px; }
+    /* margin: Define el espacio exterior. color: Define el color del texto. font-size: Define el tamaño de la tipografía. font-weight: Define el grosor de la tipografía. letter-spacing: Ajusta el espacio entre caracteres. text-transform: Transforma visualmente mayúsculas y minúsculas. */
+    .nav-label { margin: 43px 10px 12px; color: #9aa39d; font-size: 10px; font-weight: 750; letter-spacing: 1.3px; text-transform: uppercase; }
+    /* display: Define cómo se distribuyen los elementos internos. align-items: Alinea los elementos en el eje transversal. gap: Define la separación entre elementos. padding: Define el espacio interior. color: Define el color del texto. border-radius: Redondea las esquinas. font-size: Define el tamaño de la tipografía. font-weight: Define el grosor de la tipografía. text-decoration: Define la decoración del texto. transition: Suaviza los cambios visuales entre estados. */
+    .nav-link { display: flex; align-items: center; gap: 12px; padding: 12px 13px; color: #77817b; border-radius: 9px; font-size: 13px; font-weight: 600; text-decoration: none; transition: .2s ease; }
+    /* nav-link: Configura el valor visual de esta propiedad. background: Define el fondo del elemento. */
+    .nav-link:hover, .nav-link.active { color: var(--green); background: var(--green-soft); }
+    /* width: Define el ancho del elemento. height: Define la altura del elemento. */
+    .nav-link svg { width: 18px; height: 18px; }
+    /* margin-top: Configura el valor visual de esta propiedad. padding: Define el espacio interior. color: Define el color del texto. background: Define el fondo del elemento. border: Define el borde y su grosor. border-radius: Redondea las esquinas. font-size: Define el tamaño de la tipografía. line-height: Define la altura de línea del texto. */
+    .sidebar-note { margin-top: auto; padding: 15px; color: #6c786f; background: #f7f9f7; border: 1px solid var(--line); border-radius: 12px; font-size: 11px; line-height: 1.6; }
+    /* display: Define cómo se distribuyen los elementos internos. margin-bottom: Configura el valor visual de esta propiedad. color: Define el color del texto. font-size: Define el tamaño de la tipografía. */
+    .sidebar-note strong { display: block; margin-bottom: 4px; color: var(--ink); font-size: 12px; }
+    /* width: Define el ancho del elemento. max-width: Limita el ancho máximo. margin-left: Configura el valor visual de esta propiedad. padding: Define el espacio interior. */
+    .main { width: calc(100% - 246px); max-width: 1600px; margin-left: 246px; padding: 31px 42px 54px; }
+    /* display: Define cómo se distribuyen los elementos internos. justify-content: Distribuye los elementos en el eje principal. align-items: Alinea los elementos en el eje transversal. gap: Define la separación entre elementos. margin-bottom: Configura el valor visual de esta propiedad. */
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-bottom: 37px; }
+    /* color: Define el color del texto. font-size: Define el tamaño de la tipografía. */
+    .breadcrumb { color: #909a93; font-size: 12px; }
+    /* display: Define cómo se distribuyen los elementos internos. align-items: Alinea los elementos en el eje transversal. gap: Define la separación entre elementos. */
+    .topbar-right { display: flex; align-items: center; gap: 13px; }
+    /* display: Define cómo se distribuyen los elementos internos. align-items: Alinea los elementos en el eje transversal. gap: Define la separación entre elementos. padding: Define el espacio interior. color: Define el color del texto. background: Define el fondo del elemento. border-radius: Redondea las esquinas. font-size: Define el tamaño de la tipografía. font-weight: Define el grosor de la tipografía. */
+    .local-badge { display: flex; align-items: center; gap: 7px; padding: 8px 11px; color: #53715f; background: #edf4ef; border-radius: 20px; font-size: 11px; font-weight: 650; }
+    /* local-badge: Configura el valor visual de esta propiedad. height: Define la altura del elemento. content: Genera contenido visual adicional. background: Define el fondo del elemento. border-radius: Redondea las esquinas. */
+    .local-badge:before { width: 7px; height: 7px; content: ""; background: #55a674; border-radius: 50%; }
+    /* display: Define cómo se distribuyen los elementos internos. width: Define el ancho del elemento. height: Define la altura del elemento. place-items: Configura el valor visual de esta propiedad. color: Define el color del texto. background: Define el fondo del elemento. border-radius: Redondea las esquinas. font-size: Define el tamaño de la tipografía. font-weight: Define el grosor de la tipografía. */
+    .avatar { display: grid; width: 36px; height: 36px; place-items: center; color: var(--green); background: #e5eee8; border-radius: 50%; font-size: 12px; font-weight: 750; }
+    /* display: Define cómo se distribuyen los elementos internos. align-items: Alinea los elementos en el eje transversal. justify-content: Distribuye los elementos en el eje principal. gap: Define la separación entre elementos. margin-bottom: Configura el valor visual de esta propiedad. */
+    .heading-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 26px; }
+    /* margin: Define el espacio exterior. color: Define el color del texto. font-size: Define el tamaño de la tipografía. font-weight: Define el grosor de la tipografía. letter-spacing: Ajusta el espacio entre caracteres. text-transform: Transforma visualmente mayúsculas y minúsculas. */
+    .eyebrow { margin: 0 0 8px; color: var(--green); font-size: 11px; font-weight: 750; letter-spacing: 1px; text-transform: uppercase; }
+    /* margin: Define el espacio exterior. font-size: Define el tamaño de la tipografía. letter-spacing: Ajusta el espacio entre caracteres. line-height: Define la altura de línea del texto. */
+    h1 { margin: 0; font-size: clamp(25px, 3vw, 32px); letter-spacing: -1.1px; line-height: 1.2; }
+    /* margin: Define el espacio exterior. color: Define el color del texto. font-size: Define el tamaño de la tipografía. */
+    .subtitle { margin: 9px 0 0; color: var(--muted); font-size: 13px; }
+    /* display: Define cómo se distribuyen los elementos internos. min-height: Establece la altura mínima. align-items: Alinea los elementos en el eje transversal. justify-content: Distribuye los elementos en el eje principal. gap: Define la separación entre elementos. padding: Define el espacio interior. color: Define el color del texto. background: Define el fondo del elemento. border: Define el borde y su grosor. border-radius: Redondea las esquinas. font-size: Define el tamaño de la tipografía. font-weight: Define el grosor de la tipografía. transition: Suaviza los cambios visuales entre estados. */
+    .button { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; color: #fff; background: var(--green); border: 1px solid var(--green); border-radius: 8px; font-size: 12px; font-weight: 700; transition: .2s ease; }
+    /* button: Configura el valor visual de esta propiedad. border-color: Configura el valor visual de esta propiedad. transform: Aplica una transformación visual. */
+    .button:hover { background: var(--green-dark); border-color: var(--green-dark); transform: translateY(-1px); }
+    /* width: Define el ancho del elemento. height: Define la altura del elemento. */
+    .button svg { width: 16px; height: 16px; }
+    /* color: Define el color del texto. background: Define el fondo del elemento. border-color: Configura el valor visual de esta propiedad. */
+    .button.secondary { color: #526057; background: #fff; border-color: #dfe5df; }
+    /* secondary: Configura el valor visual de esta propiedad. background: Define el fondo del elemento. border-color: Configura el valor visual de esta propiedad. */
+    .button.secondary:hover { color: var(--green); background: #f7faf7; border-color: #cbd8ce; }
+    /* color: Define el color del texto. background: Define el fondo del elemento. border-color: Configura el valor visual de esta propiedad. */
+    .button.danger { color: #ac4b45; background: #fff; border-color: #f0d9d6; }
+    /* danger: Configura el valor visual de esta propiedad. */
+    .button.danger:hover { background: #fff5f4; }
+    /* display: Define cómo se distribuyen los elementos internos. grid-template-columns: Define las columnas de la cuadrícula. gap: Define la separación entre elementos. margin-bottom: Configura el valor visual de esta propiedad. */
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px; margin-bottom: 29px; }
+    /* position: Establece cómo se posiciona el elemento. min-height: Establece la altura mínima. padding: Define el espacio interior. overflow: Controla cómo se muestra el contenido que excede el espacio. background: Define el fondo del elemento. border: Define el borde y su grosor. border-radius: Redondea las esquinas. box-shadow: Añade una sombra al elemento. */
+    .stat-card { position: relative; min-height: 126px; padding: 18px 18px 16px; overflow: hidden; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 3px 12px rgba(30, 55, 42, .025); }
+    /* display: Define cómo se distribuyen los elementos internos. align-items: Alinea los elementos en el eje transversal. justify-content: Distribuye los elementos en el eje principal. color: Define el color del texto. font-size: Define el tamaño de la tipografía. font-weight: Define el grosor de la tipografía. */
+    .stat-top { display: flex; align-items: center; justify-content: space-between; color: #758078; font-size: 11px; font-weight: 650; }
+    /* display: Define cómo se distribuyen los elementos internos. width: Define el ancho del elemento. height: Define la altura del elemento. place-items: Configura el valor visual de esta propiedad. color: Define el color del texto. background: Define el fondo del elemento. border-radius: Redondea las esquinas. */
+    .stat-icon { display: grid; width: 32px; height: 32px; place-items: center; color: var(--green); background: #edf4ef; border-radius: 9px; }
+    /* width: Define el ancho del elemento. height: Define la altura del elemento. */
+    .stat-icon svg { width: 17px; height: 17px; }
+    /* margin-top: Configura el valor visual de esta propiedad. font-size: Define el tamaño de la tipografía. font-weight: Define el grosor de la tipografía. letter-spacing: Ajusta el espacio entre caracteres. */
+    .stat-value { margin-top: 12px; font-size: 25px; font-weight: 750; letter-spacing: -.8px; }
+    /* margin-top: Configura el valor visual de esta propiedad. color: Define el color del texto. font-size: Define el tamaño de la tipografía. */
+    .stat-foot { margin-top: 3px; color: #9aa39d; font-size: 10px; }
+    /* display: Define cómo se distribuyen los elementos internos. justify-content: Distribuye los elementos en el eje principal. align-items: Alinea los elementos en el eje transversal. gap: Define la separación entre elementos. margin: Define el espacio exterior. */
+    .section-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin: 0 0 14px; }
+    /* margin: Define el espacio exterior. font-size: Define el tamaño de la tipografía. letter-spacing: Ajusta el espacio entre caracteres. */
+    .section-header h2 { margin: 0; font-size: 16px; letter-spacing: -.3px; }
+    /* margin: Define el espacio exterior. color: Define el color del texto. font-size: Define el tamaño de la tipografía. */
+    .section-header p { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
+    /* margin-bottom: Configura el valor visual de esta propiedad. padding: Define el espacio interior. background: Define el fondo del elemento. border: Define el borde y su grosor. border-radius: Redondea las esquinas. */
+    .filter-panel { margin-bottom: 20px; padding: 15px; background: #fff; border: 1px solid var(--line); border-radius: 11px; }
+    /* display: Define cómo se distribuyen los elementos internos. grid-template-columns: Define las columnas de la cuadrícula. gap: Define la separación entre elementos. align-items: Alinea los elementos en el eje transversal. */
+    .filter-row { display: grid; grid-template-columns: minmax(190px, 1.5fr) repeat(5, minmax(110px, .8fr)) auto; gap: 9px; align-items: center; }
+    /* position: Establece cómo se posiciona el elemento. */
+    .input-wrap { position: relative; }
+    /* position: Establece cómo se posiciona el elemento. top: Define la posición respecto al borde superior. left: Define la posición respecto al borde izquierdo. width: Define el ancho del elemento. height: Define la altura del elemento. color: Define el color del texto. transform: Aplica una transformación visual. pointer-events: Controla si el elemento recibe eventos del puntero. */
+    .input-wrap svg { position: absolute; top: 50%; left: 12px; width: 15px; height: 15px; color: #89948c; transform: translateY(-50%); pointer-events: none; }
+    /* width: Define el ancho del elemento. height: Define la altura del elemento. padding: Define el espacio interior. color: Define el color del texto. background: Define el fondo del elemento. border: Define el borde y su grosor. border-radius: Redondea las esquinas. outline: Controla el contorno exterior del control. font-size: Define el tamaño de la tipografía. */
+    .control { width: 100%; height: 38px; padding: 0 11px; color: #3a473f; background: #fff; border: 1px solid #e5eae5; border-radius: 7px; outline: none; font-size: 11px; }
+    /* control: Configura el valor visual de esta propiedad. box-shadow: Añade una sombra al elemento. */
+    .control:focus { border-color: #8aab96; box-shadow: 0 0 0 3px rgba(36, 91, 70, .09); }
+    /* padding-left: Configura el valor visual de esta propiedad. */
+    .input-wrap .control { padding-left: 34px; }
+    /* padding: Define el espacio interior. color: Define el color del texto. background: Define el fondo del elemento. border: Define el borde y su grosor. font-size: Define el tamaño de la tipografía. font-weight: Define el grosor de la tipografía. white-space: Controla cómo se representan los espacios y saltos de línea. */
+    .clear-button { padding: 8px 4px; color: var(--green); background: none; border: 0; font-size: 10px; font-weight: 700; white-space: nowrap; }
+    /* clear-button: Configura el valor visual de esta propiedad. */
+    .clear-button:hover { text-decoration: underline; }
+    /* display: Define cómo se distribuyen los elementos internos. grid-template-columns: Define las columnas de la cuadrícula. gap: Define la separación entre elementos. */
+    .property-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 17px; }
+    /* min-width: Establece el ancho mínimo del elemento. overflow: Controla cómo se muestra el contenido que excede el espacio. background: Define el fondo del elemento. border: Define el borde y su grosor. border-radius: Redondea las esquinas. box-shadow: Añade una sombra al elemento. transition: Suaviza los cambios visuales entre estados. */
+    .property-card { min-width: 0; overflow: hidden; background: #fff; border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 4px 14px rgba(30, 55, 42, .035); transition: transform .2s, box-shadow .2s; }
+    /* property-card: Configura el valor visual de esta propiedad. box-shadow: Añade una sombra al elemento. */
+    .property-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+    /* position: Establece cómo se posiciona el elemento. display: Define cómo se distribuyen los elementos internos. height: Define la altura del elemento. place-items: Configura el valor visual de esta propiedad. overflow: Controla cómo se muestra el contenido que excede el espacio. background: Define el fondo del elemento. */
+    .property-photo { position: relative; display: grid; height: 176px; place-items: center; overflow: hidden; background: linear-gradient(140deg, #e2ebe4, #c9d9cf); }
+    /* width: Define el ancho del elemento. height: Define la altura del elemento. object-fit: Ajusta cómo se adapta la imagen a su contenedor. */
+    .property-photo img { width: 100%; height: 100%; object-fit: cover; }
+    /* width: Define el ancho del elemento. height: Define la altura del elemento. color: Define el color del texto. */
+    .property-photo .placeholder { width: 48px; height: 48px; color: rgba(36, 91, 70, .58); }
+    /* position: Establece cómo se posiciona el elemento. top: Define la posición respecto al borde superior. left: Define la posición respecto al borde izquierdo. padding: Define el espacio interior. color: Define el color del texto. background: Define el fondo del elemento. border-radius: Redondea las esquinas. font-size: Define el tamaño de la tipografía. font-weight: Define el grosor de la tipografía. */
+    .type-pill { position: absolute; top: 12px; left: 12px; padding: 6px 9px; color: #34493c; background: rgba(255,255,255,.92); border-radius: 20px; font-size: 9px; font-weight: 750; }
+    /* padding: Define el espacio interior. */
+    .property-content { padding: 15px 15px 13px; }
+    /* display: Define cómo se distribuyen los elementos internos. justify-content: Distribuye los elementos en el eje principal. align-items: Alinea los elementos en el eje transversal. gap: Define la separación entre elementos. */
+    .property-title-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+    /* margin: Define el espacio exterior. overflow: Controla cómo se muestra el contenido que excede el espacio. font-size: Define el tamaño de la tipografía. font-weight: Define el grosor de la tipografía. letter-spacing: Ajusta el espacio entre caracteres. text-overflow: Configura el valor visual de esta propiedad. white-space: Controla cómo se representan los espacios y saltos de línea. */
+    .property-title { margin: 0; overflow: hidden; font-size: 14px; font-weight: 730; letter-spacing: -.25px; text-overflow: ellipsis; white-space: nowrap; }
+    /* margin: Define el espacio exterior. overflow: Controla cómo se muestra el contenido que excede el espacio. color: Define el color del texto. font-size: Define el tamaño de la tipografía. text-overflow: Configura el valor visual de esta propiedad. white-space: Controla cómo se representan los espacios y saltos de línea. */
+    .property-address { margin: 5px 0 0; overflow: hidden; color: #8a948d; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+    /* display: Define cómo se distribuyen los elementos internos. gap: Define la separación entre elementos. margin: Define el espacio exterior. color: Define el color del texto. font-size: Define el tamaño de la tipografía. */
+    .property-facts { display: flex; gap: 13px; margin: 15px 0 13px; color: #58655c; font-size: 10px; }
+    /* display: Define cómo se distribuyen los elementos internos. align-items: Alinea los elementos en el eje transversal. gap: Define la separación entre elementos. */
+    .property-facts span { display: flex; align-items: center; gap: 5px; }
+    /* width: Define el ancho del elemento. height: Define la altura del elemento. color: Define el color del texto. */
+    .property-facts svg { width: 14px; height: 14px; color: #7d9584; }
+    /* padding-bottom: Configura el valor visual de esta propiedad. color: Define el color del texto. border-bottom: Define el borde inferior del elemento. font-size: Define el tamaño de la tipografía. */
+    .property-age { padding-bottom: 13px; color: #77827a; border-bottom: 1px solid #f0f2f0; font-size: 10px; }
+    /* display: Define cómo se distribuyen los elementos internos. align-items: Alinea los elementos en el eje transversal. gap: Define la separación entre elementos. padding-top: Configura el valor visual de esta propiedad. */
+    .property-actions { display: flex; align-items: center; gap: 6px; padding-top: 12px; }
+    /* padding: Define el espacio interior. color: Define el color del texto. background: Define el fondo del elemento. border: Define el borde y su grosor. border-radius: Redondea las esquinas. font-size: Define el tamaño de la tipografía. font-weight: Define el grosor de la tipografía. */
+    .text-button { padding: 6px 8px; color: var(--green); background: transparent; border: 0; border-radius: 5px; font-size: 10px; font-weight: 700; }
+    /* text-button: Configura el valor visual de esta propiedad. */
+    .text-button:hover { background: #eef4ef; }
+    /* color: Define el color del texto. */
+    .text-button.muted { color: #68746b; }
+    /* margin-left: Configura el valor visual de esta propiedad. color: Define el color del texto. */
+    .text-button.delete { margin-left: auto; color: #a65a52; }
+    /* delete: Configura el valor visual de esta propiedad. */
+    .text-button.delete:hover { background: #fff1ef; }
+    /* grid-column: Indica qué columnas ocupa el elemento. display: Define cómo se distribuyen los elementos internos. min-height: Establece la altura mínima. flex-direction: Indica la dirección de distribución flexible. align-items: Alinea los elementos en el eje transversal. justify-content: Distribuye los elementos en el eje principal. padding: Define el espacio interior. text-align: Alinea el texto horizontalmente. background: Define el fondo del elemento. border: Define el borde y su grosor. border-radius: Redondea las esquinas. */
+    .empty-state { grid-column: 1 / -1; display: flex; min-height: 270px; flex-direction: column; align-items: center; justify-content: center; padding: 30px; text-align: center; background: #fff; border: 1px dashed #d9e2db; border-radius: 12px; }
+    /* display: Define cómo se distribuyen los elementos internos. width: Define el ancho del elemento. height: Define la altura del elemento. place-items: Configura el valor visual de esta propiedad. margin-bottom: Configura el valor visual de esta propiedad. color: Define el color del texto. background: Define el fondo del elemento. border-radius: Redondea las esquinas. */
+    .empty-icon { display: grid; width: 58px; height: 58px; place-items: center; margin-bottom: 14px; color: var(--green); background: #edf4ef; border-radius: 18px; }
+    /* width: Define el ancho del elemento. height: Define la altura del elemento. */
+    .empty-icon svg { width: 27px; height: 27px; }
+    /* margin: Define el espacio exterior. font-size: Define el tamaño de la tipografía. */
+    .empty-state h3 { margin: 0; font-size: 15px; }
+    /* max-width: Limita el ancho máximo. margin: Define el espacio exterior. color: Define el color del texto. font-size: Define el tamaño de la tipografía. line-height: Define la altura de línea del texto. */
+    .empty-state p { max-width: 320px; margin: 8px 0 18px; color: var(--muted); font-size: 11px; line-height: 1.6; }
+    /* color: Define el color del texto. font-size: Define el tamaño de la tipografía. */
+    .results-caption { color: #8b958e; font-size: 10px; }
+    /* width: Define el ancho del elemento. max-height: Configura el valor visual de esta propiedad. padding: Define el espacio interior. overflow: Controla cómo se muestra el contenido que excede el espacio. color: Define el color del texto. background: Define el fondo del elemento. border: Define el borde y su grosor. border-radius: Redondea las esquinas. box-shadow: Añade una sombra al elemento. */
+    dialog { width: min(620px, calc(100% - 28px)); max-height: min(92vh, 850px); padding: 0; overflow: auto; color: var(--ink); background: #fff; border: 0; border-radius: 15px; box-shadow: 0 24px 80px rgba(15, 34, 23, .25); }
+    /* dialog: Configura el valor visual de esta propiedad. backdrop-filter: Aplica un efecto visual al fondo detrás del elemento. */
+    dialog::backdrop { background: rgba(21, 34, 27, .48); backdrop-filter: blur(3px); }
+    /* position: Establece cómo se posiciona el elemento. top: Define la posición respecto al borde superior. z-index: Controla el orden de superposición. display: Define cómo se distribuyen los elementos internos. justify-content: Distribuye los elementos en el eje principal. align-items: Alinea los elementos en el eje transversal. padding: Define el espacio interior. background: Define el fondo del elemento. border-bottom: Define el borde inferior del elemento. */
+    .dialog-head { position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; align-items: flex-start; padding: 22px 24px 17px; background: #fff; border-bottom: 1px solid var(--line); }
+    /* margin: Define el espacio exterior. font-size: Define el tamaño de la tipografía. letter-spacing: Ajusta el espacio entre caracteres. */
+    .dialog-head h2 { margin: 0; font-size: 18px; letter-spacing: -.4px; }
+    /* margin: Define el espacio exterior. color: Define el color del texto. font-size: Define el tamaño de la tipografía. */
+    .dialog-head p { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
+    /* display: Define cómo se distribuyen los elementos internos. width: Define el ancho del elemento. height: Define la altura del elemento. place-items: Configura el valor visual de esta propiedad. color: Define el color del texto. background: Define el fondo del elemento. border: Define el borde y su grosor. border-radius: Redondea las esquinas. */
+    .icon-button { display: grid; width: 31px; height: 31px; place-items: center; color: #758078; background: #f5f7f5; border: 0; border-radius: 8px; }
+    /* icon-button: Configura el valor visual de esta propiedad. background: Define el fondo del elemento. */
+    .icon-button:hover { color: var(--ink); background: #eaf0eb; }
+    /* width: Define el ancho del elemento. height: Define la altura del elemento. */
+    .icon-button svg { width: 16px; height: 16px; }
+    /* padding: Define el espacio interior. */
+    .property-form { padding: 19px 24px 23px; }
+    /* display: Define cómo se distribuyen los elementos internos. grid-template-columns: Define las columnas de la cuadrícula. gap: Define la separación entre elementos. */
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 13px; }
+    /* min-width: Establece el ancho mínimo del elemento. */
+    .field { min-width: 0; }
+    /* grid-column: Indica qué columnas ocupa el elemento. */
+    .field.full { grid-column: 1 / -1; }
+    /* display: Define cómo se distribuyen los elementos internos. margin-bottom: Configura el valor visual de esta propiedad. color: Define el color del texto. font-size: Define el tamaño de la tipografía. font-weight: Define el grosor de la tipografía. */
+    .field label { display: block; margin-bottom: 6px; color: #4a584e; font-size: 10px; font-weight: 700; }
+    /* color: Define el color del texto. font-weight: Define el grosor de la tipografía. */
+    .field label .optional { color: #9ca59e; font-weight: 500; }
+    /* height: Define la altura del elemento. font-size: Define el tamaño de la tipografía. */
+    .field .control { height: 41px; font-size: 11px; }
+    /* height: Define la altura del elemento. padding: Define el espacio interior. resize: Permite cambiar el tamaño del campo de texto. */
+    .field textarea.control { height: 82px; padding: 10px 11px; resize: vertical; }
+    /* padding: Define el espacio interior. */
+    .field input[type="file"].control { padding: 9px; }
+    /* margin: Define el espacio exterior. color: Define el color del texto. font-size: Define el tamaño de la tipografía. line-height: Define la altura de línea del texto. */
+    .helper { margin: 5px 0 0; color: #929b94; font-size: 9px; line-height: 1.5; }
+    /* margin-top: Configura el valor visual de esta propiedad. padding: Define el espacio interior. background: Define el fondo del elemento. border: Define el borde y su grosor. border-radius: Redondea las esquinas. */
+    .estimate-panel { margin-top: 17px; padding: 15px; background: #f7f9f7; border: 1px solid var(--line); border-radius: 10px; }
+    /* margin: Define el espacio exterior. font-size: Define el tamaño de la tipografía. */
+    .estimate-heading { margin: 0; font-size: 12px; }
+    /* display: Define cómo se distribuyen los elementos internos. align-items: Alinea los elementos en el eje transversal. justify-content: Distribuye los elementos en el eje principal. gap: Define la separación entre elementos. margin-top: Configura el valor visual de esta propiedad. */
+    .estimate-summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 11px; }
+    /* font-size: Define el tamaño de la tipografía. font-weight: Define el grosor de la tipografía. letter-spacing: Ajusta el espacio entre caracteres. */
+    .estimate-price { font-size: 21px; font-weight: 750; letter-spacing: -.5px; }
+    /* margin: Define el espacio exterior. color: Define el color del texto. font-size: Define el tamaño de la tipografía. line-height: Define la altura de línea del texto. */
+    .estimate-status { margin: 5px 0 0; color: #77827a; font-size: 10px; line-height: 1.55; }
+    /* color: Define el color del texto. */
+    .estimate-status[data-state="error"] { color: #a34740; }
+    /* color: Define el color del texto. */
+    .estimate-status[data-state="calculated"] { color: var(--green); }
+    /* margin: Define el espacio exterior. color: Define el color del texto. font-size: Define el tamaño de la tipografía. line-height: Define la altura de línea del texto. */
+    .estimate-note { margin: 10px 0 0; color: #8c968e; font-size: 9px; line-height: 1.55; }
+    /* min-height: Establece la altura mínima. padding: Define el espacio interior. font-size: Define el tamaño de la tipografía. */
+    .estimate-button { min-height: 34px; padding: 0 11px; font-size: 10px; }
+    /* estimate-button: Configura el valor visual de esta propiedad. opacity: Ajusta la opacidad del elemento. */
+    .estimate-button:disabled { cursor: wait; opacity: .65; }
+    /* margin-bottom: Configura el valor visual de esta propiedad. padding: Define el espacio interior. background: Define el fondo del elemento. border-radius: Redondea las esquinas. */
+    .property-estimate { margin-bottom: 12px; padding: 10px 11px; background: #f5f8f5; border-radius: 7px; }
+    /* display: Define cómo se distribuyen los elementos internos. margin-top: Configura el valor visual de esta propiedad. font-size: Define el tamaño de la tipografía. */
+    .property-estimate strong { display: block; margin-top: 3px; font-size: 14px; }
+    /* color: Define el color del texto. font-size: Define el tamaño de la tipografía. */
+    .property-estimate span { color: #77827a; font-size: 9px; }
+    /* display: Define cómo se distribuyen los elementos internos. margin-top: Configura el valor visual de esta propiedad. color: Define el color del texto. font-size: Define el tamaño de la tipografía. */
+    .estimate-stale { display: block; margin-top: 4px; color: #a16738 !important; font-size: 9px !important; }
+    /* display: Define cómo se distribuyen los elementos internos. margin: Define el espacio exterior. padding: Define el espacio interior. color: Define el color del texto. background: Define el fondo del elemento. border-radius: Redondea las esquinas. font-size: Define el tamaño de la tipografía. */
+    .form-error { display: none; margin: 13px 0 0; padding: 10px 12px; color: #9c4841; background: #fff2f0; border-radius: 7px; font-size: 10px; }
+    /* display: Define cómo se distribuyen los elementos internos. */
+    .form-error.visible { display: block; }
+    /* display: Define cómo se distribuyen los elementos internos. justify-content: Distribuye los elementos en el eje principal. gap: Define la separación entre elementos. margin-top: Configura el valor visual de esta propiedad. */
+    .dialog-actions { display: flex; justify-content: flex-end; gap: 9px; margin-top: 20px; }
+    /* display: Define cómo se distribuyen los elementos internos. height: Define la altura del elemento. place-items: Configura el valor visual de esta propiedad. overflow: Controla cómo se muestra el contenido que excede el espacio. background: Define el fondo del elemento. */
+    .details-image { display: grid; height: 250px; place-items: center; overflow: hidden; background: linear-gradient(140deg, #e2ebe4, #c9d9cf); }
+    /* width: Define el ancho del elemento. height: Define la altura del elemento. object-fit: Ajusta cómo se adapta la imagen a su contenedor. */
+    .details-image img { width: 100%; height: 100%; object-fit: cover; }
+    /* width: Define el ancho del elemento. height: Define la altura del elemento. color: Define el color del texto. */
+    .details-image .placeholder { width: 58px; height: 58px; color: rgba(36, 91, 70, .58); }
+    /* padding: Define el espacio interior. */
+    .details-body { padding: 23px 25px 25px; }
+    /* display: Define cómo se distribuyen los elementos internos. margin-bottom: Configura el valor visual de esta propiedad. padding: Define el espacio interior. color: Define el color del texto. background: Define el fondo del elemento. border-radius: Redondea las esquinas. font-size: Define el tamaño de la tipografía. font-weight: Define el grosor de la tipografía. */
+    .details-type { display: inline-block; margin-bottom: 9px; padding: 6px 9px; color: var(--green); background: var(--green-soft); border-radius: 20px; font-size: 9px; font-weight: 750; }
+    /* margin: Define el espacio exterior. font-size: Define el tamaño de la tipografía. letter-spacing: Ajusta el espacio entre caracteres. */
+    .details-body h2 { margin: 0; font-size: 24px; letter-spacing: -.7px; }
+    /* margin: Define el espacio exterior. color: Define el color del texto. font-size: Define el tamaño de la tipografía. */
+    .details-address { margin: 7px 0 20px; color: var(--muted); font-size: 11px; }
+    /* display: Define cómo se distribuyen los elementos internos. grid-template-columns: Define las columnas de la cuadrícula. gap: Define la separación entre elementos. */
+    .details-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; }
+    /* padding: Define el espacio interior. background: Define el fondo del elemento. border-radius: Redondea las esquinas. */
+    .detail-stat { padding: 13px; background: #f7f9f7; border-radius: 9px; }
+    /* display: Define cómo se distribuyen los elementos internos. font-size: Define el tamaño de la tipografía. */
+    .detail-stat strong { display: block; font-size: 15px; }
+    /* display: Define cómo se distribuyen los elementos internos. margin-top: Configura el valor visual de esta propiedad. color: Define el color del texto. font-size: Define el tamaño de la tipografía. */
+    .detail-stat span { display: block; margin-top: 4px; color: var(--muted); font-size: 9px; }
+    /* margin-top: Configura el valor visual de esta propiedad. */
+    .description-block { margin-top: 19px; }
+    /* margin: Define el espacio exterior. font-size: Define el tamaño de la tipografía. */
+    .description-block h3 { margin: 0 0 7px; font-size: 11px; }
+    /* margin: Define el espacio exterior. color: Define el color del texto. font-size: Define el tamaño de la tipografía. line-height: Define la altura de línea del texto. white-space: Controla cómo se representan los espacios y saltos de línea. */
+    .description-block p { margin: 0; color: #657168; font-size: 11px; line-height: 1.7; white-space: pre-wrap; }
+    /* margin-top: Configura el valor visual de esta propiedad. padding-top: Configura el valor visual de esta propiedad. color: Define el color del texto. border-top: Configura el valor visual de esta propiedad. font-size: Define el tamaño de la tipografía. */
+    .registered-date { margin-top: 17px; padding-top: 13px; color: #909990; border-top: 1px solid var(--line); font-size: 9px; }
+    /* position: Establece cómo se posiciona el elemento. top: Define la posición respecto al borde superior. right: Define la posición respecto al borde derecho. z-index: Controla el orden de superposición. display: Define cómo se distribuyen los elementos internos. flex-direction: Indica la dirección de distribución flexible. gap: Define la separación entre elementos. */
+    .toast-region { position: fixed; top: 18px; right: 20px; z-index: 20; display: flex; flex-direction: column; gap: 8px; }
+    /* max-width: Limita el ancho máximo. padding: Define el espacio interior. color: Define el color del texto. background: Define el fondo del elemento. border-radius: Redondea las esquinas. box-shadow: Añade una sombra al elemento. font-size: Define el tamaño de la tipografía. animation: Configura el valor visual de esta propiedad. */
+    .toast { max-width: min(360px, calc(100vw - 40px)); padding: 12px 15px; color: #fff; background: #294f3c; border-radius: 9px; box-shadow: 0 8px 24px rgba(15,34,23,.2); font-size: 11px; animation: slide-in .2s ease-out; }
+    /* background: Define el fondo del elemento. */
+    .toast.error { background: #a34740; }
+    /* opacity: Ajusta la opacidad del elemento. transform: Aplica una transformación visual. opacity: Ajusta la opacidad del elemento. transform: Aplica una transformación visual. */
+    @keyframes slide-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+    /* Activa reglas visuales adaptadas al ancho de pantalla o preferencias del usuario. */
+    @media (max-width: 1180px) {
+      /* padding-right: Configura el valor visual de esta propiedad. padding-left: Configura el valor visual de esta propiedad. */
+      .main { padding-right: 27px; padding-left: 27px; }
+      /* grid-template-columns: Define las columnas de la cuadrícula. */
+      .filter-row { grid-template-columns: minmax(180px, 1.4fr) repeat(3, minmax(105px, .8fr)); }
+      /* justify-self: Configura el valor visual de esta propiedad. */
+      .clear-button { justify-self: start; }
+    /* Cierra la regla CSS o condición adaptable actual. */
+    }
+    /* Activa reglas visuales adaptadas al ancho de pantalla o preferencias del usuario. */
+    @media (max-width: 900px) {
+      /* width: Define el ancho del elemento. */
+      .sidebar { width: 205px; }
+      /* width: Define el ancho del elemento. margin-left: Configura el valor visual de esta propiedad. padding-right: Configura el valor visual de esta propiedad. padding-left: Configura el valor visual de esta propiedad. */
+      .main { width: calc(100% - 205px); margin-left: 205px; padding-right: 22px; padding-left: 22px; }
+      /* grid-template-columns: Define las columnas de la cuadrícula. */
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      /* grid-template-columns: Define las columnas de la cuadrícula. */
+      .property-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    /* Cierra la regla CSS o condición adaptable actual. */
+    }
+    /* Activa reglas visuales adaptadas al ancho de pantalla o preferencias del usuario. */
+    @media (max-width: 640px) {
+      /* display: Define cómo se distribuyen los elementos internos. */
+      .app-shell { display: block; }
+      /* position: Establece cómo se posiciona el elemento. width: Define el ancho del elemento. height: Define la altura del elemento. flex-direction: Indica la dirección de distribución flexible. justify-content: Distribuye los elementos en el eje principal. align-items: Alinea los elementos en el eje transversal. padding: Define el espacio interior. border-right: Define el borde derecho del elemento. border-bottom: Define el borde inferior del elemento. */
+      .sidebar { position: static; width: 100%; height: auto; flex-direction: row; justify-content: space-between; align-items: center; padding: 12px 16px; border-right: 0; border-bottom: 1px solid var(--line); }
+      /* padding: Define el espacio interior. */
+      .brand { padding: 0; }
+      /* width: Define el ancho del elemento. height: Define la altura del elemento. */
+      .brand-mark { width: 37px; height: 37px; }
+      /* max-width: Limita el ancho máximo. font-size: Define el tamaño de la tipografía. */
+      .brand-name { max-width: 170px; font-size: 12px; }
+      /* display: Define cómo se distribuyen los elementos internos. */
+      .nav-label, .sidebar-note { display: none; }
+      /* display: Define cómo se distribuyen los elementos internos. gap: Define la separación entre elementos. */
+      .sidebar nav { display: flex; gap: 3px; }
+      /* padding: Define el espacio interior. font-size: Define el tamaño de la tipografía. */
+      .nav-link { padding: 9px; font-size: 0; }
+      /* width: Define el ancho del elemento. height: Define la altura del elemento. */
+      .nav-link svg { width: 19px; height: 19px; }
+      /* width: Define el ancho del elemento. margin: Define el espacio exterior. padding: Define el espacio interior. */
+      .main { width: 100%; margin: 0; padding: 19px 16px 36px; }
+      /* margin-bottom: Configura el valor visual de esta propiedad. */
+      .topbar { margin-bottom: 26px; }
+      /* gap: Define la separación entre elementos. */
+      .topbar-right { gap: 8px; }
+      /* padding: Define el espacio interior. font-size: Define el tamaño de la tipografía. */
+      .local-badge { padding: 7px 9px; font-size: 9px; }
+      /* width: Define el ancho del elemento. height: Define la altura del elemento. */
+      .avatar { width: 32px; height: 32px; }
+      /* align-items: Alinea los elementos en el eje transversal. */
+      .heading-row { align-items: flex-start; }
+      /* flex-shrink: Controla cuánto puede reducirse el elemento flexible. min-height: Establece la altura mínima. padding: Define el espacio interior. font-size: Define el tamaño de la tipografía. */
+      .heading-row > .button { flex-shrink: 0; min-height: 38px; padding: 0 11px; font-size: 10px; }
+      /* max-width: Limita el ancho máximo. line-height: Define la altura de línea del texto. */
+      .subtitle { max-width: 290px; line-height: 1.5; }
+      /* gap: Define la separación entre elementos. margin-bottom: Configura el valor visual de esta propiedad. */
+      .stats { gap: 9px; margin-bottom: 25px; }
+      /* min-height: Establece la altura mínima. padding: Define el espacio interior. */
+      .stat-card { min-height: 114px; padding: 13px; }
+      /* align-items: Alinea los elementos en el eje transversal. gap: Define la separación entre elementos. font-size: Define el tamaño de la tipografía. */
+      .stat-top { align-items: flex-start; gap: 5px; font-size: 9px; }
+      /* width: Define el ancho del elemento. height: Define la altura del elemento. flex: Define el crecimiento, reducción y tamaño base flexible. */
+      .stat-icon { width: 28px; height: 28px; flex: 0 0 28px; }
+      /* margin-top: Configura el valor visual de esta propiedad. font-size: Define el tamaño de la tipografía. */
+      .stat-value { margin-top: 12px; font-size: 22px; }
+      /* grid-template-columns: Define las columnas de la cuadrícula. */
+      .filter-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      /* grid-column: Indica qué columnas ocupa el elemento. */
+      .filter-row .input-wrap { grid-column: 1 / -1; }
+      /* grid-column: Indica qué columnas ocupa el elemento. */
+      .filter-row .clear-button { grid-column: 1 / -1; }
+      /* grid-template-columns: Define las columnas de la cuadrícula. gap: Define la separación entre elementos. */
+      .property-grid { grid-template-columns: 1fr; gap: 12px; }
+      /* height: Define la altura del elemento. */
+      .property-photo { height: 190px; }
+      /* align-items: Alinea los elementos en el eje transversal. */
+      .section-header { align-items: flex-start; }
+      /* align-items: Alinea los elementos en el eje transversal. flex-direction: Indica la dirección de distribución flexible. */
+      .estimate-summary { align-items: stretch; flex-direction: column; }
+      /* width: Define el ancho del elemento. */
+      .estimate-button { width: 100%; }
+      /* grid-template-columns: Define las columnas de la cuadrícula. */
+      .form-grid { grid-template-columns: 1fr; }
+      /* grid-column: Indica qué columnas ocupa el elemento. */
+      .field.full { grid-column: auto; }
+      /* padding: Define el espacio interior. */
+      .dialog-head { padding: 18px 18px 14px; }
+      /* padding: Define el espacio interior. */
+      .property-form { padding: 16px 18px 19px; }
+      /* height: Define la altura del elemento. */
+      .details-image { height: 205px; }
+      /* padding: Define el espacio interior. */
+      .details-body { padding: 19px; }
+      /* grid-template-columns: Define las columnas de la cuadrícula. */
+      .details-stats { grid-template-columns: repeat(2, 1fr); }
+    /* Cierra la regla CSS o condición adaptable actual. */
+    }
+    /* Activa reglas visuales adaptadas al ancho de pantalla o preferencias del usuario. */
+    @media (prefers-reduced-motion: reduce) {
+      /* scroll-behavior: Controla la animación del desplazamiento. animation-duration: Define la duración de la animación. animation-iteration-count: Define cuántas veces se repite la animación. transition-duration: Configura el valor visual de esta propiedad. */
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    /* Cierra la regla CSS o condición adaptable actual. */
+    }
+  /* Define una regla visual del diseño de la aplicación. */
+  </style>
+<!-- Agrupa o presenta contenido de la interfaz. -->
+</head>
+<!-- Inicia el contenido visible para el usuario. -->
+<body>
+  <!-- Agrupa o presenta contenido de la interfaz. -->
+  <div class="app-shell">
+    <!-- Crea la barra lateral de navegación y notas. -->
+    <aside class="sidebar">
+      <!-- Agrupa o presenta contenido de la interfaz. -->
+      <a class="brand" href="#" aria-label="Mi Patrimonio Inmobiliario, inicio">
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <span class="brand-mark" aria-hidden="true">
+          <!-- Dibuja el icono vectorial de la interfaz. -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/><path d="M9 21v-7h6v7"/></svg>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        </span>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <span class="brand-name">Mi Patrimonio<br>Inmobiliario</span>
+      <!-- Agrupa o presenta contenido de la interfaz. -->
+      </a>
+      <!-- Agrupa o presenta contenido de la interfaz. -->
+      <div class="nav-label">Espacio de trabajo</div>
+      <!-- Agrupa los enlaces de navegación principal. -->
+      <nav aria-label="Navegación principal">
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <a class="nav-link active" href="#inventario" aria-current="page">
+          <!-- Dibuja el icono vectorial de la interfaz. -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="10" width="8" height="11" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/></svg>
+          <!-- Texto visible o contenido descriptivo de la interfaz. -->
+          Inventario
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        </a>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <a class="nav-link" href="#resumen">
+          <!-- Dibuja el icono vectorial de la interfaz. -->
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m18 9-5 5-4-4-5 5"/><path d="M15 9h3v3"/></svg>
+          <!-- Texto visible o contenido descriptivo de la interfaz. -->
+          Resumen
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        </a>
+      <!-- Agrupa o presenta contenido de la interfaz. -->
+      </nav>
+      <!-- Agrupa o presenta contenido de la interfaz. -->
+      <div class="sidebar-note"><strong>Tu espacio, tus datos</strong>La información se guarda únicamente en este navegador y no se comparte con ningún servidor.</div>
+    <!-- Agrupa o presenta contenido de la interfaz. -->
+    </aside>
+    <!-- Marca el contenido principal del panel. -->
+    <main class="main">
+      <!-- Abre la sección de metadatos y estilos de la página. -->
+      <header class="topbar">
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <div class="breadcrumb">Espacio de trabajo&nbsp; / &nbsp;<strong style="color:#546159;font-weight:650">Inventario</strong></div>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <div class="topbar-right"><span class="local-badge">Guardado local</span><span class="avatar" aria-label="Usuario">MP</span></div>
+      <!-- Agrupa o presenta contenido de la interfaz. -->
+      </header>
+      <!-- Delimita una sección funcional del panel. -->
+      <section id="resumen" aria-labelledby="page-title">
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <div class="heading-row">
+          <!-- Agrupa o presenta contenido de la interfaz. -->
+          <div><p class="eyebrow">Tu espacio inmobiliario</p><h1 id="page-title">Mi Patrimonio Inmobiliario</h1><p class="subtitle">Una vista clara y organizada de todo lo que has construido.</p></div>
+          <!-- Crea una acción interactiva de la interfaz. -->
+          <button class="button" id="add-property" type="button">
+            <!-- Dibuja el icono vectorial de la interfaz. -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+            <!-- Texto visible o contenido descriptivo de la interfaz. -->
+            Añadir propiedad
+          <!-- Agrupa o presenta contenido de la interfaz. -->
+          </button>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        </div>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <div class="stats" aria-label="Estadísticas del inventario">
+          <!-- Representa una tarjeta independiente del inventario. -->
+          <article class="stat-card"><div class="stat-top"><span>Propiedades registradas</span><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></span></div><div class="stat-value" id="stat-properties">0</div><div class="stat-foot">En tu inventario</div></article>
+          <!-- Representa una tarjeta independiente del inventario. -->
+          <article class="stat-card"><div class="stat-top"><span>Superficie total</span><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M9 4v4H4m16 3h-5v5h5m-7 4v-5H8"/></svg></span></div><div class="stat-value" id="stat-area">0 <small style="font-size:12px;font-weight:600">m²</small></div><div class="stat-foot">Metros cuadrados registrados</div></article>
+          <!-- Representa una tarjeta independiente del inventario. -->
+          <article class="stat-card"><div class="stat-top"><span>Habitaciones</span><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20v-8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v8M3 16h18M5 10V6a2 2 0 0 1 2-2h3v6m4 0V4h3a2 2 0 0 1 2 2v4"/></svg></span></div><div class="stat-value" id="stat-rooms">0</div><div class="stat-foot">En todas tus propiedades</div></article>
+          <!-- Representa una tarjeta independiente del inventario. -->
+          <article class="stat-card"><div class="stat-top"><span>Antigüedad promedio</span><span class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span></div><div class="stat-value" id="stat-age">0 <small style="font-size:12px;font-weight:600">años</small></div><div class="stat-foot">Promedio de antigüedad</div></article>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        </div>
+      <!-- Agrupa o presenta contenido de la interfaz. -->
+      </section>
+      <!-- Delimita una sección funcional del panel. -->
+      <section id="inventario" aria-labelledby="inventory-title">
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <div class="section-header">
+          <!-- Agrupa o presenta contenido de la interfaz. -->
+          <div><h2 id="inventory-title">Tu inventario</h2><p>Consulta y organiza todas tus propiedades.</p></div>
+          <!-- Agrupa o presenta contenido de la interfaz. -->
+          <span class="results-caption" id="results-caption">0 propiedades</span>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        </div>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <div class="filter-panel" aria-label="Buscar, filtrar y ordenar propiedades">
+          <!-- Agrupa o presenta contenido de la interfaz. -->
+          <div class="filter-row">
+            <!-- Asocia un texto accesible con un campo del formulario. -->
+            <label class="input-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input class="control" id="search-filter" type="search" placeholder="Buscar propiedad..." aria-label="Buscar por nombre"></label>
+            <!-- Crea una lista de opciones para un filtro o dato. -->
+            <select class="control" id="type-filter" aria-label="Filtrar por tipo"><option value="">Todos los tipos</option><option value="Casa">Casa</option><option value="Departamento">Departamento</option><option value="Terreno">Terreno</option><option value="Local comercial">Local comercial</option><option value="Otro">Otro</option></select>
+            <!-- Crea una lista de opciones para un filtro o dato. -->
+            <select class="control" id="rooms-filter" aria-label="Filtrar por habitaciones"><option value="">Habitaciones</option><option value="0">Sin habitaciones</option><option value="1">1 habitación</option><option value="2">2 habitaciones</option><option value="3">3 habitaciones</option><option value="4">4 o más</option></select>
+            <!-- Crea un campo para introducir o seleccionar un dato. -->
+            <input class="control" id="min-area-filter" type="number" min="0" step="any" placeholder="m² mín." aria-label="Superficie mínima">
+            <!-- Crea un campo para introducir o seleccionar un dato. -->
+            <input class="control" id="max-area-filter" type="number" min="0" step="any" placeholder="m² máx." aria-label="Superficie máxima">
+            <!-- Crea una lista de opciones para un filtro o dato. -->
+            <select class="control" id="age-filter" aria-label="Filtrar por antigüedad"><option value="">Antigüedad</option><option value="0-5">0–5 años</option><option value="6-15">6–15 años</option><option value="16-30">16–30 años</option><option value="31+">Más de 30 años</option></select>
+            <!-- Crea una acción interactiva de la interfaz. -->
+            <button class="clear-button" id="clear-filters" type="button">Limpiar filtros</button>
+          <!-- Agrupa o presenta contenido de la interfaz. -->
+          </div>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        </div>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <div class="section-header" style="margin-top:4px">
+          <!-- Agrupa o presenta contenido de la interfaz. -->
+          <div></div>
+          <!-- Asocia un texto accesible con un campo del formulario. -->
+          <label style="display:flex;align-items:center;gap:8px;color:#77827a;font-size:10px">Ordenar por
+            <!-- Crea una lista de opciones para un filtro o dato. -->
+            <select class="control" id="sort-filter" aria-label="Ordenar propiedades" style="width:auto;min-width:142px;height:32px;padding-right:23px">
+              <!-- Agrupa o presenta contenido de la interfaz. -->
+              <option value="newest">Más recientes</option><option value="name">Nombre</option><option value="area-desc">Mayor superficie</option><option value="area-asc">Menor superficie</option><option value="age-desc">Mayor antigüedad</option><option value="age-asc">Menor antigüedad</option>
+            <!-- Agrupa o presenta contenido de la interfaz. -->
+            </select>
+          <!-- Agrupa o presenta contenido de la interfaz. -->
+          </label>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        </div>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <div class="property-grid" id="property-grid" aria-live="polite"></div>
+      <!-- Agrupa o presenta contenido de la interfaz. -->
+      </section>
+    <!-- Agrupa o presenta contenido de la interfaz. -->
+    </main>
+  <!-- Agrupa o presenta contenido de la interfaz. -->
+  </div>
+  <!-- Define una ventana modal para formulario o detalles. -->
+  <dialog id="property-dialog" aria-labelledby="form-title">
+    <!-- Agrupa o presenta contenido de la interfaz. -->
+    <div class="dialog-head"><div><h2 id="form-title">Añadir propiedad</h2><p>Completa los datos para mantener tu inventario al día.</p></div><button class="icon-button" type="button" data-close="property-dialog" aria-label="Cerrar formulario"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m18 6-12 12M6 6l12 12"/></svg></button></div>
+    <!-- Inicia el formulario de captura de propiedades. -->
+    <form class="property-form" id="property-form" novalidate>
+      <!-- Agrupa o presenta contenido de la interfaz. -->
+      <div class="form-grid">
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <div class="field full"><label for="property-name">Nombre de la propiedad *</label><input class="control" id="property-name" name="name" type="text" maxlength="80" required placeholder="Ej. Casa familiar"></div>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <div class="field"><label for="property-type">Tipo de propiedad *</label><select class="control" id="property-type" name="type" required><option value="">Selecciona un tipo</option><option>Casa</option><option>Departamento</option><option>Terreno</option><option>Local comercial</option><option>Otro</option></select></div>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <div class="field"><label for="property-area">Metros cuadrados *</label><input class="control" id="property-area" name="area" type="number" min="0.01" step="any" required placeholder="Ej. 120"><p class="helper">Debe ser un número mayor que cero.</p></div>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <div class="field"><label for="property-rooms">Habitaciones *</label><input class="control" id="property-rooms" name="rooms" type="number" min="0" step="1" required value="0"></div>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <div class="field"><label for="property-age">Años de antigüedad *</label><input class="control" id="property-age" name="age" type="number" min="0" step="1" required value="0"></div>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <div class="field full"><label for="property-address">Dirección <span class="optional">(opcional)</span></label><input class="control" id="property-address" name="address" type="text" maxlength="160" placeholder="Calle, ciudad"></div>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <div class="field full"><label for="property-description">Descripción <span class="optional">(opcional)</span></label><textarea class="control" id="property-description" name="description" maxlength="1000" placeholder="Añade detalles que quieras recordar..."></textarea></div>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <div class="field full"><label for="property-image-url">Imagen por URL <span class="optional">(opcional)</span></label><input class="control" id="property-image-url" name="imageUrl" type="url" placeholder="https://ejemplo.com/imagen.jpg"><p class="helper">O selecciona una imagen desde tu dispositivo (máximo 2 MB).</p></div>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <div class="field full"><label for="property-image-file">Subir imagen <span class="optional">(opcional)</span></label><input class="control" id="property-image-file" name="imageFile" type="file" accept="image/*"></div>
+      <!-- Agrupa o presenta contenido de la interfaz. -->
+      </div>
+      <!-- Delimita una sección funcional del panel. -->
+      <section class="estimate-panel" aria-labelledby="estimate-heading">
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <h3 class="estimate-heading" id="estimate-heading">Estimación del precio</h3>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <div class="estimate-summary">
+          <!-- Agrupa o presenta contenido de la interfaz. -->
+          <div><div class="estimate-price" id="estimate-price">—</div><p class="estimate-status" id="estimate-status" data-state="pending" role="status">Completa los datos necesarios para calcular el precio estimado de esta propiedad.</p></div>
+          <!-- Crea una acción interactiva de la interfaz. -->
+          <button class="button secondary estimate-button" id="calculate-price" type="button">Calcular precio estimado</button>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        </div>
+        <!-- Agrupa o presenta contenido de la interfaz. -->
+        <p class="estimate-note">Estimación orientativa del modelo en dólares estadounidenses (USD). No es una tasación oficial ni un precio de mercado verificado.</p>
+      <!-- Agrupa o presenta contenido de la interfaz. -->
+      </section>
+      <!-- Agrupa o presenta contenido de la interfaz. -->
+      <p class="form-error" id="form-error" role="alert"></p>
+      <!-- Agrupa o presenta contenido de la interfaz. -->
+      <div class="dialog-actions"><button class="button secondary" type="button" data-close="property-dialog">Cancelar</button><button class="button" id="save-property" type="submit">Guardar propiedad</button></div>
+    <!-- Agrupa o presenta contenido de la interfaz. -->
+    </form>
+  <!-- Agrupa o presenta contenido de la interfaz. -->
+  </dialog>
+  <!-- Define una ventana modal para formulario o detalles. -->
+  <dialog id="details-dialog" aria-labelledby="details-title"><div id="details-content"></div></dialog>
+  <!-- Agrupa o presenta contenido de la interfaz. -->
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="false"></div>
+  <!-- Inicia el JavaScript que implementa las interacciones del frontend. -->
+  <script>
+    // Aísla el código de la aplicación en una función autoejecutable.
+    (() => {
+      // Activa el modo estricto para detectar errores de JavaScript.
+      "use strict";
+
+      // Identifica la clave de localStorage donde se persisten las propiedades.
+      const STORAGE_KEY = "mi-patrimonio-inmobiliario.properties.v1";
+      // Limita el tamaño de imagen que se puede guardar localmente.
+      const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
+      // Define los tipos de inmueble permitidos por el formulario.
+      const validTypes = ["Casa", "Departamento", "Terreno", "Local comercial", "Otro"];
+      // Reúne referencias a los controles HTML que usa la aplicación.
+      const elements = {
+        // Guarda el contenedor donde se dibujan las tarjetas del inventario.
+        grid: document.getElementById("property-grid"),
+        // Guarda el formulario que recoge los datos de la propiedad.
+        form: document.getElementById("property-form"),
+        // Guarda la ventana modal del formulario de propiedad.
+        formDialog: document.getElementById("property-dialog"),
+        // Guarda la ventana modal de detalles.
+        detailsDialog: document.getElementById("details-dialog"),
+        // Guarda el contenedor donde se construye la vista detallada.
+        detailsContent: document.getElementById("details-content"),
+        // Guarda el título que cambia entre alta y edición.
+        formTitle: document.getElementById("form-title"),
+        // Guarda el mensaje de validación del formulario.
+        formError: document.getElementById("form-error"),
+        // Guarda el texto donde aparece el precio estimado.
+        estimatePrice: document.getElementById("estimate-price"),
+        // Guarda el texto accesible del estado de cálculo.
+        estimateStatus: document.getElementById("estimate-status"),
+        // Guarda el botón de cálculo manual del precio.
+        calculatePrice: document.getElementById("calculate-price"),
+        // Guarda el campo de búsqueda por nombre.
+        search: document.getElementById("search-filter"),
+        // Guarda el filtro por tipo de inmueble.
+        type: document.getElementById("type-filter"),
+        // Guarda el filtro por habitaciones.
+        rooms: document.getElementById("rooms-filter"),
+        // Guarda el filtro de superficie mínima.
+        minArea: document.getElementById("min-area-filter"),
+        // Guarda el filtro de superficie máxima.
+        maxArea: document.getElementById("max-area-filter"),
+        // Guarda el filtro por antigüedad.
+        age: document.getElementById("age-filter"),
+        // Guarda el selector de ordenamiento.
+        sort: document.getElementById("sort-filter"),
+        // Guarda el contador de propiedades visibles.
+        results: document.getElementById("results-caption"),
+        // Guarda el contenedor de notificaciones temporales.
+        toastRegion: document.getElementById("toast-region")
+      // Finaliza el objeto que reúne los controles de la página.
+      };
+      // Mantiene en memoria las propiedades cargadas o modificadas.
+      let properties = [];
+      // Indica si el formulario crea un registro o edita uno existente.
+      let editingId = null;
+      // Conserva la última estimación válida recibida del backend.
+      let currentEstimate = null;
+      // Guarda el estado actual del cálculo mostrado al usuario.
+      let estimateStatus = "pending";
+      // Indica si cambiaron los datos desde la última estimación válida.
+      let estimateStale = false;
+      // Guarda el mensaje comprensible del último error de cálculo.
+      let estimateError = "";
+      // Guarda el temporizador que retrasa las llamadas mientras se escribe.
+      let estimateTimer = null;
+      // Permite cancelar una solicitud anterior si cambian los datos.
+      let estimateController = null;
+      // Identifica cada cálculo para ignorar respuestas obsoletas.
+      let estimateSequence = 0;
+      // Permite esperar el cálculo pendiente antes de guardar.
+      let estimatePromise = null;
+
+      // Escapa caracteres HTML para mostrar datos del usuario con seguridad.
+      function escapeHtml(value) {
+        // Devuelve el resultado o comunica el error al llamador.
+        return String(value ?? "").replace(/[&<>"']/g, character => ({
+          // Convierte caracteres especiales a entidades HTML antes de insertar texto.
+          "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+        // Cierra el bloque de control o función actual.
+        })[character]);
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Comprueba el formato de cada propiedad cargada del almacenamiento local.
+      function validProperty(item) {
+        // Devuelve el resultado o comunica el error al llamador.
+        return item && typeof item.id === "string" && typeof item.name === "string" &&
+          // Comprueba que el inmueble tenga un tipo permitido y una superficie positiva.
+          validTypes.includes(item.type) && Number.isFinite(item.area) && item.area > 0 &&
+          // Comprueba que habitaciones y antigüedad sean enteros no negativos.
+          Number.isInteger(item.rooms) && item.rooms >= 0 && Number.isInteger(item.age) && item.age >= 0 &&
+          // Comprueba que la dirección y descripción sean cadenas de texto.
+          typeof item.address === "string" && typeof item.description === "string" &&
+          // Permite solo imágenes vacías, URL web o datos de imagen.
+          (item.image === "" || (typeof item.image === "string" && /^(https:\/\/|http:\/\/|data:image\/)/i.test(item.image))) &&
+          // Verifica que la propiedad conserve su fecha de registro.
+          typeof item.createdAt === "string" &&
+          // Valida que la estimación almacenada tenga datos de precio y moneda.
+          (item.priceEstimate === undefined || item.priceEstimate === null || (
+            // Rechaza precios guardados que no sean números finitos.
+            Number.isFinite(item.priceEstimate.price) &&
+            // Comprueba que el precio esté expresado en la moneda de la API.
+            item.priceEstimate.currency === "USD" &&
+            // Implementa el paso actual de la interacción del usuario.
+            typeof item.priceEstimate.calculatedAt === "string" &&
+            // Implementa el paso actual de la interacción del usuario.
+            Number.isFinite(Date.parse(item.priceEstimate.calculatedAt))
+          // Cierra los argumentos de la llamada abierta anteriormente.
+          )) &&
+          // Ejecuta la llamada o finaliza la expresión actual.
+          (item.estimateStatus === undefined || ["pending", "calculated", "stale", "error"].includes(item.estimateStatus));
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Carga y valida los registros persistidos en localStorage.
+      function loadProperties() {
+        // Controla errores o garantiza la limpieza del proceso.
+        try {
+          // Declara stored, un valor usado por el flujo actual.
+          const stored = localStorage.getItem(STORAGE_KEY);
+          // Evalúa una condición para escoger la acción adecuada.
+          if (stored === null) return;
+          // Declara parsed, un valor usado por el flujo actual.
+          const parsed = JSON.parse(stored);
+          // Evalúa una condición para escoger la acción adecuada.
+          if (!Array.isArray(parsed) || !parsed.every(validProperty)) {
+            // Devuelve el resultado o comunica el error al llamador.
+            throw new Error("Los datos guardados tienen un formato inesperado.");
+          // Cierra el bloque de control o función actual.
+          }
+          // Implementa el paso actual de la interacción del usuario.
+          properties = parsed;
+        // Controla errores o garantiza la limpieza del proceso.
+        } catch (error) {
+          // Ejecuta la llamada o finaliza la expresión actual.
+          showToast(`No se pudieron cargar las propiedades guardadas: ${error.message}`, true);
+        // Cierra el bloque de control o función actual.
+        }
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Guarda el inventario actualizado y notifica si el almacenamiento falla.
+      function persistProperties(nextProperties) {
+        // Controla errores o garantiza la limpieza del proceso.
+        try {
+          // Ejecuta la llamada o finaliza la expresión actual.
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(nextProperties));
+          // Implementa el paso actual de la interacción del usuario.
+          properties = nextProperties;
+          // Devuelve el resultado o comunica el error al llamador.
+          return true;
+        // Controla errores o garantiza la limpieza del proceso.
+        } catch (error) {
+          // Ejecuta la llamada o finaliza la expresión actual.
+          showToast(`No se pudieron guardar los cambios en este navegador: ${error.message}`, true);
+          // Devuelve el resultado o comunica el error al llamador.
+          return false;
+        // Cierra el bloque de control o función actual.
+        }
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Muestra una notificación temporal de éxito o error.
+      function showToast(message, isError = false) {
+        // Declara toast, un valor usado por el flujo actual.
+        const toast = document.createElement("div");
+        // Implementa el paso actual de la interacción del usuario.
+        toast.className = `toast${isError ? " error" : ""}`;
+        // Ejecuta la llamada o finaliza la expresión actual.
+        toast.setAttribute("role", isError ? "alert" : "status");
+        // Implementa el paso actual de la interacción del usuario.
+        toast.textContent = message;
+        // Ejecuta la llamada o finaliza la expresión actual.
+        elements.toastRegion.append(toast);
+        // Aísla el código de la aplicación en una función autoejecutable.
+        window.setTimeout(() => toast.remove(), 4200);
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Formatea un número con las convenciones locales en español.
+      function formatNumber(value, maximumFractionDigits = 1) {
+        // Devuelve el resultado o comunica el error al llamador.
+        return new Intl.NumberFormat("es-MX", { maximumFractionDigits }).format(value);
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Formatea el precio usando la moneda informada por la API.
+      function formatCurrency(estimate) {
+        // Devuelve el resultado o comunica el error al llamador.
+        return new Intl.NumberFormat("en-US", {
+          // Implementa el paso actual de la interacción del usuario.
+          style: "currency",
+          // Implementa el paso actual de la interacción del usuario.
+          currency: estimate.currency,
+          // Implementa el paso actual de la interacción del usuario.
+          minimumFractionDigits: 2,
+          // Implementa el paso actual de la interacción del usuario.
+          maximumFractionDigits: 2
+        // Cierra el bloque de control o función actual.
+        }).format(estimate.price);
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Crea el fragmento visual del precio estimado de una tarjeta.
+      function propertyEstimateMarkup(property) {
+        // Evalúa una condición para escoger la acción adecuada.
+        if (!property.priceEstimate) {
+          // Devuelve el resultado o comunica el error al llamador.
+          return property.estimateStatus === "error"
+            // Implementa el paso actual de la interacción del usuario.
+            ? '<div class="property-estimate"><span>Precio estimado</span><strong>Estimación no disponible</strong></div>'
+            // Implementa el paso actual de la interacción del usuario.
+            : "";
+        // Cierra el bloque de control o función actual.
+        }
+        // Declara stale, un valor usado por el flujo actual.
+        const stale = property.estimateStatus === "stale" || property.estimateStatus === "error";
+        // Declara note, un valor usado por el flujo actual.
+        const note = stale ? '<span class="estimate-stale">Estimación anterior; podría estar desactualizada</span>' : "";
+        // Devuelve el resultado o comunica el error al llamador.
+        return `<div class="property-estimate"><span>Precio estimado</span><strong>${escapeHtml(formatCurrency(property.priceEstimate))} USD</strong>${note}</div>`;
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Muestra la imagen registrada o una ilustración de reemplazo.
+      function imageMarkup(property, className = "") {
+        // Declara placeholder, un valor usado por el flujo actual.
+        const placeholder = '<svg class="placeholder" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 21 19-15 19 15v21H29V28H19v14H5z"/><path d="M14 21h.01M34 21h.01M19 42V28h10v14"/></svg>';
+        // Evalúa una condición para escoger la acción adecuada.
+        if (!property.image) return placeholder;
+        // Devuelve el resultado o comunica el error al llamador.
+        return `<img class="${className}" src="${escapeHtml(property.image)}" alt="Imagen de ${escapeHtml(property.name)}" loading="lazy" referrerpolicy="no-referrer">`;
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Recalcula y actualiza las estadísticas del inventario.
+      function updateStats() {
+        // Declara totalArea, un valor usado por el flujo actual.
+        const totalArea = properties.reduce((sum, item) => sum + item.area, 0);
+        // Declara totalRooms, un valor usado por el flujo actual.
+        const totalRooms = properties.reduce((sum, item) => sum + item.rooms, 0);
+        // Declara averageAge, un valor usado por el flujo actual.
+        const averageAge = properties.length ? properties.reduce((sum, item) => sum + item.age, 0) / properties.length : 0;
+        // Conecta el control de añadir con la apertura del formulario.
+        document.getElementById("stat-properties").textContent = formatNumber(properties.length, 0);
+        // Conecta el control de añadir con la apertura del formulario.
+        document.getElementById("stat-area").innerHTML = `${formatNumber(totalArea)} <small style="font-size:12px;font-weight:600">m²</small>`;
+        // Conecta el control de añadir con la apertura del formulario.
+        document.getElementById("stat-rooms").textContent = formatNumber(totalRooms, 0);
+        // Conecta el control de añadir con la apertura del formulario.
+        document.getElementById("stat-age").innerHTML = `${formatNumber(averageAge)} <small style="font-size:12px;font-weight:600">años</small>`;
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Decide si una propiedad cumple todos los filtros activos.
+      function matchesFilters(property) {
+        // Declara query, un valor usado por el flujo actual.
+        const query = elements.search.value.trim().toLocaleLowerCase("es");
+        // Evalúa una condición para escoger la acción adecuada.
+        if (query && !property.name.toLocaleLowerCase("es").includes(query)) return false;
+        // Evalúa una condición para escoger la acción adecuada.
+        if (elements.type.value && property.type !== elements.type.value) return false;
+        // Evalúa una condición para escoger la acción adecuada.
+        if (elements.rooms.value) {
+          // Convierte el filtro de habitaciones a un número para comparar.
+          const expectedRooms = Number(elements.rooms.value);
+          // Evalúa una condición para escoger la acción adecuada.
+          if (expectedRooms === 4 ? property.rooms < 4 : property.rooms !== expectedRooms) return false;
+        // Cierra el bloque de control o función actual.
+        }
+        // Declara minArea, un valor usado por el flujo actual.
+        const minArea = elements.minArea.value === "" ? null : Number(elements.minArea.value);
+        // Declara maxArea, un valor usado por el flujo actual.
+        const maxArea = elements.maxArea.value === "" ? null : Number(elements.maxArea.value);
+        // Evalúa una condición para escoger la acción adecuada.
+        if (minArea !== null && property.area < minArea) return false;
+        // Evalúa una condición para escoger la acción adecuada.
+        if (maxArea !== null && property.area > maxArea) return false;
+        // Evalúa una condición para escoger la acción adecuada.
+        if (elements.age.value) {
+          // Obtiene los límites del rango de antigüedad seleccionado.
+          const [minAge, maxAge] = elements.age.value.split("-");
+          // Evalúa una condición para escoger la acción adecuada.
+          if (elements.age.value === "31+") {
+            // Evalúa una condición para escoger la acción adecuada.
+            if (property.age <= 30) return false;
+          // Evalúa una condición para escoger la acción adecuada.
+          } else if (property.age < Number(minAge) || property.age > Number(maxAge)) return false;
+        // Cierra el bloque de control o función actual.
+        }
+        // Devuelve el resultado o comunica el error al llamador.
+        return true;
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Filtra y ordena las propiedades antes de mostrarlas.
+      function getVisibleProperties() {
+        // Declara visible, un valor usado por el flujo actual.
+        const visible = properties.filter(matchesFilters);
+        // Declara sorters, un valor usado por el flujo actual.
+        const sorters = {
+          // Implementa el paso actual de la interacción del usuario.
+          newest: (a, b) => b.createdAt.localeCompare(a.createdAt),
+          // Implementa el paso actual de la interacción del usuario.
+          name: (a, b) => a.name.localeCompare(b.name, "es"),
+          // Implementa el paso actual de la interacción del usuario.
+          "area-desc": (a, b) => b.area - a.area,
+          // Implementa el paso actual de la interacción del usuario.
+          "area-asc": (a, b) => a.area - b.area,
+          // Implementa el paso actual de la interacción del usuario.
+          "age-desc": (a, b) => b.age - a.age,
+          // Implementa el paso actual de la interacción del usuario.
+          "age-asc": (a, b) => a.age - b.age
+        // Finaliza el objeto que reúne los controles de la página.
+        };
+        // Ejecuta la llamada o finaliza la expresión actual.
+        visible.sort(sorters[elements.sort.value] || sorters.newest);
+        // Devuelve el resultado o comunica el error al llamador.
+        return visible;
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Construye la tarjeta HTML con los datos y acciones del inmueble.
+      function renderCard(property) {
+        // Devuelve el resultado o comunica el error al llamador.
+        return `<article class="property-card">
+          <div class="property-photo">${imageMarkup(property)}<span class="type-pill">${escapeHtml(property.type)}</span></div><!-- Contenido de la plantilla HTML que se inserta en la interfaz. -->
+          <div class="property-content"><!-- Contenido de la plantilla HTML que se inserta en la interfaz. -->
+            <div class="property-title-row"><div style="min-width:0"><h3 class="property-title" title="${escapeHtml(property.name)}">${escapeHtml(property.name)}</h3><p class="property-address">${property.address ? escapeHtml(property.address) : "Sin dirección registrada"}</p></div></div><!-- Contenido de la plantilla HTML que se inserta en la interfaz. -->
+            <div class="property-facts"><!-- Contenido de la plantilla HTML que se inserta en la interfaz. -->
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 4v4H4m16 3h-5v5h5"/></svg>${formatNumber(property.area)} m²</span><!-- Contenido de la plantilla HTML que se inserta en la interfaz. -->
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M3 20v-8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v8M3 16h18M5 10V6a2 2 0 0 1 2-2h3v6"/></svg>${formatNumber(property.rooms, 0)} hab.</span><!-- Contenido de la plantilla HTML que se inserta en la interfaz. -->
+            </div><!-- Contenido de la plantilla HTML que se inserta en la interfaz. -->
+            <div class="property-age">Antigüedad: ${formatNumber(property.age, 0)} ${property.age === 1 ? "año" : "años"}</div><!-- Contenido de la plantilla HTML que se inserta en la interfaz. -->
+            ${propertyEstimateMarkup(property)}<!-- Contenido de la plantilla HTML que se inserta en la interfaz. -->
+            <div class="property-actions"><button class="text-button" type="button" data-action="details" data-id="${escapeHtml(property.id)}">Ver detalles</button><button class="text-button muted" type="button" data-action="edit" data-id="${escapeHtml(property.id)}">Editar</button><button class="text-button delete" type="button" data-action="delete" data-id="${escapeHtml(property.id)}">Eliminar</button></div><!-- Contenido de la plantilla HTML que se inserta en la interfaz. -->
+          </div><!-- Contenido de la plantilla HTML que se inserta en la interfaz. -->
+        </article><!-- Contenido de la plantilla HTML que se inserta en la interfaz. -->`;
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Actualiza las estadísticas, el contador y el contenido del listado.
+      function render() {
+        // Ejecuta la llamada o finaliza la expresión actual.
+        updateStats();
+        // Declara visible, un valor usado por el flujo actual.
+        const visible = getVisibleProperties();
+        // Implementa el paso actual de la interacción del usuario.
+        elements.results.textContent = `${visible.length} ${visible.length === 1 ? "propiedad" : "propiedades"}${visible.length !== properties.length ? ` de ${properties.length}` : ""}`;
+        // Evalúa una condición para escoger la acción adecuada.
+        if (!properties.length) {
+          // Muestra el estado vacío con acceso para añadir la primera propiedad.
+          elements.grid.innerHTML = `<div class="empty-state"><span class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/><path d="M9 21v-7h6v7"/></svg></span><h3>Tu inventario empieza aquí</h3><p>Aún no has registrado propiedades. Añade la primera para tener toda la información en un solo lugar.</p><button class="button" type="button" data-action="add">Añadir primera propiedad</button></div>`;
+        // Evalúa una condición para escoger la acción adecuada.
+        } else if (!visible.length) {
+          // Muestra un mensaje cuando los filtros no devuelven resultados.
+          elements.grid.innerHTML = `<div class="empty-state"><span class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></span><h3>No encontramos propiedades</h3><p>Prueba con otros términos o limpia los filtros para volver a ver todo tu inventario.</p><button class="button secondary" type="button" data-action="clear-filters">Limpiar filtros</button></div>`;
+        // Evalúa una condición para escoger la acción adecuada.
+        } else {
+          // Inserta las tarjetas ya filtradas y ordenadas en la cuadrícula.
+          elements.grid.innerHTML = visible.map(renderCard).join("");
+        // Cierra el bloque de control o función actual.
+        }
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Prepara y abre el formulario para crear o editar una propiedad.
+      function openForm(property = null) {
+        // Ejecuta la llamada o finaliza la expresión actual.
+        clearTimeout(estimateTimer);
+        // Evalúa una condición para escoger la acción adecuada.
+        if (estimateController) estimateController.abort();
+        // Implementa el paso actual de la interacción del usuario.
+        estimateSequence += 1;
+        // Implementa el paso actual de la interacción del usuario.
+        estimatePromise = null;
+        // Implementa el paso actual de la interacción del usuario.
+        editingId = property ? property.id : null;
+        // Implementa el paso actual de la interacción del usuario.
+        currentEstimate = property ? property.priceEstimate || null : null;
+        // Implementa el paso actual de la interacción del usuario.
+        estimateStatus = property
+          // Implementa el paso actual de la interacción del usuario.
+          ? property.estimateStatus || (currentEstimate ? "calculated" : "pending")
+          // Implementa el paso actual de la interacción del usuario.
+          : "pending";
+        // Implementa el paso actual de la interacción del usuario.
+        estimateStale = estimateStatus === "stale" || estimateStatus === "error";
+        // Implementa el paso actual de la interacción del usuario.
+        estimateError = "";
+        // Ejecuta la llamada o finaliza la expresión actual.
+        elements.form.reset();
+        // Implementa el paso actual de la interacción del usuario.
+        elements.formError.textContent = "";
+        // Ejecuta la llamada o finaliza la expresión actual.
+        elements.formError.classList.remove("visible");
+        // Implementa el paso actual de la interacción del usuario.
+        elements.formTitle.textContent = property ? "Editar propiedad" : "Añadir propiedad";
+        // Conecta el control de añadir con la apertura del formulario.
+        document.getElementById("save-property").textContent = property ? "Guardar cambios" : "Guardar propiedad";
+        // Evalúa una condición para escoger la acción adecuada.
+        if (property) {
+          // Evalúa una condición para escoger la acción adecuada.
+          for (const field of ["name", "type", "area", "rooms", "age", "address", "description"]) {
+            // Implementa el paso actual de la interacción del usuario.
+            elements.form.elements[field].value = property[field];
+          // Cierra el bloque de control o función actual.
+          }
+          // Conecta el control de añadir con la apertura del formulario.
+          document.getElementById("property-image-url").value = property.image.startsWith("data:image/") ? "" : property.image;
+        // Cierra el bloque de control o función actual.
+        }
+        // Ejecuta la llamada o finaliza la expresión actual.
+        renderEstimate();
+        // Ejecuta la llamada o finaliza la expresión actual.
+        elements.formDialog.showModal();
+        // Conecta el control de añadir con la apertura del formulario.
+        document.getElementById("property-name").focus();
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Presenta un mensaje de validación dentro del formulario.
+      function setFormError(message) {
+        // Implementa el paso actual de la interacción del usuario.
+        elements.formError.textContent = message;
+        // Ejecuta la llamada o finaliza la expresión actual.
+        elements.formError.classList.add("visible");
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Valida y recoge las tres características que requiere el modelo.
+      function getEstimateInputs() {
+        // Declara areaText, un valor usado por el flujo actual.
+        const areaText = elements.form.elements.area.value.trim();
+        // Declara roomsText, un valor usado por el flujo actual.
+        const roomsText = elements.form.elements.rooms.value.trim();
+        // Declara ageText, un valor usado por el flujo actual.
+        const ageText = elements.form.elements.age.value.trim();
+        // Declara area, un valor usado por el flujo actual.
+        const area = Number(areaText);
+        // Declara rooms, un valor usado por el flujo actual.
+        const rooms = Number(roomsText);
+        // Declara age, un valor usado por el flujo actual.
+        const age = Number(ageText);
+        // Evalúa una condición para escoger la acción adecuada.
+        if (!areaText || !Number.isFinite(area) || area <= 0 ||
+            // Implementa el paso actual de la interacción del usuario.
+            !roomsText || !Number.isInteger(rooms) || rooms < 0 ||
+            // Implementa el paso actual de la interacción del usuario.
+            !ageText || !Number.isInteger(age) || age < 0) return null;
+        // Devuelve el resultado o comunica el error al llamador.
+        return { area, rooms, age };
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Actualiza precio, estado y botón del panel de estimación.
+      function renderEstimate() {
+        // Implementa el paso actual de la interacción del usuario.
+        elements.estimatePrice.textContent = currentEstimate
+          // Implementa el paso actual de la interacción del usuario.
+          ? `${formatCurrency(currentEstimate)} USD`
+          // Implementa el paso actual de la interacción del usuario.
+          : "Sin calcular";
+        // Implementa el paso actual de la interacción del usuario.
+        elements.estimateStatus.dataset.state = estimateStatus;
+        // Conecta el botón con el cálculo manual inmediato.
+        elements.calculatePrice.disabled = estimateStatus === "calculating";
+        // Conecta el botón con el cálculo manual inmediato.
+        elements.calculatePrice.textContent = estimateStatus === "calculating"
+          // Implementa el paso actual de la interacción del usuario.
+          ? "Calculando…"
+          // Implementa el paso actual de la interacción del usuario.
+          : currentEstimate ? "Volver a calcular" : "Calcular precio estimado";
+
+        // Evalúa una condición para escoger la acción adecuada.
+        if (estimateStatus === "calculating") {
+          // Implementa el paso actual de la interacción del usuario.
+          elements.estimateStatus.textContent = currentEstimate
+            // Implementa el paso actual de la interacción del usuario.
+            ? "Calculando una nueva estimación; se conserva el último precio válido."
+            // Implementa el paso actual de la interacción del usuario.
+            : "Calculando el precio estimado…";
+        // Evalúa una condición para escoger la acción adecuada.
+        } else if (estimateStatus === "calculated" && currentEstimate) {
+          // Declara date, un valor usado por el flujo actual.
+          const date = new Intl.DateTimeFormat("es-MX", {
+            // Implementa el paso actual de la interacción del usuario.
+            dateStyle: "medium",
+            // Implementa el paso actual de la interacción del usuario.
+            timeStyle: "short"
+          // Cierra el bloque de control o función actual.
+          }).format(new Date(currentEstimate.calculatedAt));
+          // Implementa el paso actual de la interacción del usuario.
+          elements.estimateStatus.textContent = `Calculado por el modelo el ${date}`;
+        // Evalúa una condición para escoger la acción adecuada.
+        } else if (estimateStatus === "error") {
+          // Implementa el paso actual de la interacción del usuario.
+          elements.estimateStatus.textContent = `${estimateError || "No se pudo completar el cálculo."}${currentEstimate ? " Se conserva la última estimación válida, que podría estar desactualizada." : ""}`;
+        // Evalúa una condición para escoger la acción adecuada.
+        } else if (estimateStatus === "stale" || estimateStale) {
+          // Implementa el paso actual de la interacción del usuario.
+          elements.estimateStatus.textContent = "Los datos cambiaron. La estimación anterior podría estar desactualizada.";
+        // Evalúa una condición para escoger la acción adecuada.
+        } else if (getEstimateInputs()) {
+          // Implementa el paso actual de la interacción del usuario.
+          elements.estimateStatus.textContent = "Los datos están completos. Calcula el precio o espera a que termine la actualización automática.";
+        // Evalúa una condición para escoger la acción adecuada.
+        } else {
+          // Implementa el paso actual de la interacción del usuario.
+          elements.estimateStatus.textContent = "Completa los datos necesarios para calcular el precio estimado de esta propiedad.";
+        // Cierra el bloque de control o función actual.
+        }
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Envía características al endpoint y valida su respuesta JSON.
+      async function requestPriceEstimate(inputs, signal) {
+        // Declara response;, un valor usado por el flujo actual.
+        let response;
+        // Controla errores o garantiza la limpieza del proceso.
+        try {
+          // Abre un bloque de código para la operación siguiente.
+          response = await fetch("/api/estimate", {
+            // Implementa el paso actual de la interacción del usuario.
+            method: "POST",
+            // Implementa el paso actual de la interacción del usuario.
+            headers: { "Content-Type": "application/json" },
+            // Abre un bloque de código para la operación siguiente.
+            body: JSON.stringify({
+              // Implementa el paso actual de la interacción del usuario.
+              metros_cuadrados: inputs.area,
+              // Implementa el paso actual de la interacción del usuario.
+              habitaciones: inputs.rooms,
+              // Implementa el paso actual de la interacción del usuario.
+              antiguedad: inputs.age
+            // Cierra el bloque de control o función actual.
+            }),
+            // Implementa el paso actual de la interacción del usuario.
+            signal
+          // Cierra el bloque de control o función actual.
+          });
+        // Controla errores o garantiza la limpieza del proceso.
+        } catch (error) {
+          // Evalúa una condición para escoger la acción adecuada.
+          if (error.name === "AbortError") throw error;
+          // Devuelve el resultado o comunica el error al llamador.
+          throw new Error("No se pudo conectar con el backend. Comprueba que el servidor esté iniciado.");
+        // Cierra el bloque de control o función actual.
+        }
+
+        // Declara data;, un valor usado por el flujo actual.
+        let data;
+        // Controla errores o garantiza la limpieza del proceso.
+        try {
+          // Ejecuta la llamada o finaliza la expresión actual.
+          data = await response.json();
+        // Controla errores o garantiza la limpieza del proceso.
+        } catch {
+          // Devuelve el resultado o comunica el error al llamador.
+          throw new Error("El backend devolvió una respuesta inesperada.");
+        // Cierra el bloque de control o función actual.
+        }
+        // Evalúa una condición para escoger la acción adecuada.
+        if (!data || typeof data !== "object" || Array.isArray(data)) {
+          // Devuelve el resultado o comunica el error al llamador.
+          throw new Error("El backend devolvió una respuesta inesperada.");
+        // Cierra el bloque de control o función actual.
+        }
+        // Evalúa una condición para escoger la acción adecuada.
+        if (!response.ok) {
+          // Devuelve el resultado o comunica el error al llamador.
+          throw new Error(typeof data.detail === "string"
+            // Implementa el paso actual de la interacción del usuario.
+            ? data.detail
+            // Ejecuta la llamada o finaliza la expresión actual.
+            : "No fue posible calcular el precio. Inténtalo de nuevo.");
+        // Cierra el bloque de control o función actual.
+        }
+        // Evalúa una condición para escoger la acción adecuada.
+        if (!Number.isFinite(data.precio_estimado) || data.moneda !== "USD" ||
+            // Implementa el paso actual de la interacción del usuario.
+            typeof data.calculado_en !== "string" ||
+            // Abre un bloque de código para la operación siguiente.
+            !Number.isFinite(Date.parse(data.calculado_en))) {
+          // Devuelve el resultado o comunica el error al llamador.
+          throw new Error("El backend devolvió una respuesta inesperada.");
+        // Cierra el bloque de control o función actual.
+        }
+        // Devuelve el resultado o comunica el error al llamador.
+        return {
+          // Implementa el paso actual de la interacción del usuario.
+          price: data.precio_estimado,
+          // Implementa el paso actual de la interacción del usuario.
+          currency: data.moneda,
+          // Implementa el paso actual de la interacción del usuario.
+          calculatedAt: data.calculado_en
+        // Finaliza el objeto que reúne los controles de la página.
+        };
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Solicita una estimación inmediata y controla carga, errores y respuestas antiguas.
+      function calculateEstimateNow() {
+        // Ejecuta la llamada o finaliza la expresión actual.
+        clearTimeout(estimateTimer);
+        // Declara inputs, un valor usado por el flujo actual.
+        const inputs = getEstimateInputs();
+        // Evalúa una condición para escoger la acción adecuada.
+        if (!inputs) {
+          // Implementa el paso actual de la interacción del usuario.
+          estimateStatus = currentEstimate ? "stale" : "pending";
+          // Ejecuta la llamada o finaliza la expresión actual.
+          estimateStale = Boolean(currentEstimate);
+          // Implementa el paso actual de la interacción del usuario.
+          estimateError = "";
+          // Ejecuta la llamada o finaliza la expresión actual.
+          renderEstimate();
+          // Devuelve el resultado o comunica el error al llamador.
+          return Promise.resolve(false);
+        // Cierra el bloque de control o función actual.
+        }
+        // Evalúa una condición para escoger la acción adecuada.
+        if (estimateController) estimateController.abort();
+        // Declara sequence, un valor usado por el flujo actual.
+        const sequence = ++estimateSequence;
+        // Declara controller, un valor usado por el flujo actual.
+        const controller = new AbortController();
+        // Implementa el paso actual de la interacción del usuario.
+        estimateController = controller;
+        // Implementa el paso actual de la interacción del usuario.
+        estimateStatus = "calculating";
+        // Implementa el paso actual de la interacción del usuario.
+        estimateError = "";
+        // Ejecuta la llamada o finaliza la expresión actual.
+        renderEstimate();
+
+        // Declara task, un valor usado por el flujo actual.
+        const task = (async () => {
+          // Controla errores o garantiza la limpieza del proceso.
+          try {
+            // Declara result, un valor usado por el flujo actual.
+            const result = await requestPriceEstimate(inputs, controller.signal);
+            // Evalúa una condición para escoger la acción adecuada.
+            if (sequence !== estimateSequence) return false;
+            // Implementa el paso actual de la interacción del usuario.
+            currentEstimate = result;
+            // Implementa el paso actual de la interacción del usuario.
+            estimateStale = false;
+            // Implementa el paso actual de la interacción del usuario.
+            estimateStatus = "calculated";
+            // Devuelve el resultado o comunica el error al llamador.
+            return true;
+          // Controla errores o garantiza la limpieza del proceso.
+          } catch (error) {
+            // Evalúa una condición para escoger la acción adecuada.
+            if (error.name === "AbortError" || sequence !== estimateSequence) return false;
+            // Implementa el paso actual de la interacción del usuario.
+            estimateStatus = "error";
+            // Ejecuta la llamada o finaliza la expresión actual.
+            estimateStale = Boolean(currentEstimate);
+            // Implementa el paso actual de la interacción del usuario.
+            estimateError = error.message;
+            // Devuelve el resultado o comunica el error al llamador.
+            return false;
+          // Controla errores o garantiza la limpieza del proceso.
+          } finally {
+            // Evalúa una condición para escoger la acción adecuada.
+            if (sequence === estimateSequence) {
+              // Implementa el paso actual de la interacción del usuario.
+              estimateController = null;
+              // Implementa el paso actual de la interacción del usuario.
+              estimatePromise = null;
+              // Ejecuta la llamada o finaliza la expresión actual.
+              renderEstimate();
+            // Cierra el bloque de control o función actual.
+            }
+          // Cierra el bloque de control o función actual.
+          }
+        // Cierra el bloque de control o función actual.
+        })();
+        // Implementa el paso actual de la interacción del usuario.
+        estimatePromise = task;
+        // Devuelve el resultado o comunica el error al llamador.
+        return task;
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Programa un recálculo después de una pausa en la escritura.
+      function scheduleEstimate() {
+        // Ejecuta la llamada o finaliza la expresión actual.
+        clearTimeout(estimateTimer);
+        // Evalúa una condición para escoger la acción adecuada.
+        if (estimateController) estimateController.abort();
+        // Implementa el paso actual de la interacción del usuario.
+        estimateController = null;
+        // Implementa el paso actual de la interacción del usuario.
+        estimateSequence += 1;
+        // Implementa el paso actual de la interacción del usuario.
+        estimatePromise = null;
+        // Implementa el paso actual de la interacción del usuario.
+        estimateStatus = currentEstimate ? "stale" : "pending";
+        // Ejecuta la llamada o finaliza la expresión actual.
+        estimateStale = Boolean(currentEstimate);
+        // Implementa el paso actual de la interacción del usuario.
+        estimateError = "";
+        // Ejecuta la llamada o finaliza la expresión actual.
+        renderEstimate();
+        // Evalúa una condición para escoger la acción adecuada.
+        if (!getEstimateInputs()) return;
+        // Aísla el código de la aplicación en una función autoejecutable.
+        estimateTimer = window.setTimeout(() => {
+          // Ejecuta la llamada o finaliza la expresión actual.
+          calculateEstimateNow();
+        // Cierra el bloque de control o función actual.
+        }, 600);
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Lee una imagen local y la convierte en una cadena de datos.
+      function readImageFile(file) {
+        // Devuelve el resultado o comunica el error al llamador.
+        return new Promise((resolve, reject) => {
+          // Declara reader, un valor usado por el flujo actual.
+          const reader = new FileReader();
+          // Ejecuta la llamada o finaliza la expresión actual.
+          reader.onload = () => resolve(String(reader.result));
+          // Ejecuta la llamada o finaliza la expresión actual.
+          reader.onerror = () => reject(new Error("No se pudo leer la imagen seleccionada."));
+          // Ejecuta la llamada o finaliza la expresión actual.
+          reader.readAsDataURL(file);
+        // Cierra el bloque de control o función actual.
+        });
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Valida los campos, asegura la estimación y guarda la propiedad.
+      async function handleSave(event) {
+        // Ejecuta la llamada o finaliza la expresión actual.
+        event.preventDefault();
+        // Conecta el control de añadir con la apertura del formulario.
+        const saveButton = document.getElementById("save-property");
+        // Evalúa una condición para escoger la acción adecuada.
+        if (saveButton.disabled) return;
+        // Ejecuta la llamada o finaliza la expresión actual.
+        elements.formError.classList.remove("visible");
+        // Declara formData, un valor usado por el flujo actual.
+        const formData = new FormData(elements.form);
+        // Declara name, un valor usado por el flujo actual.
+        const name = String(formData.get("name") || "").trim();
+        // Declara type, un valor usado por el flujo actual.
+        const type = String(formData.get("type") || "");
+        // Declara area, un valor usado por el flujo actual.
+        const area = Number(formData.get("area"));
+        // Declara roomsInput, un valor usado por el flujo actual.
+        const roomsInput = String(formData.get("rooms") || "").trim();
+        // Declara ageInput, un valor usado por el flujo actual.
+        const ageInput = String(formData.get("age") || "").trim();
+        // Declara rooms, un valor usado por el flujo actual.
+        const rooms = Number(roomsInput);
+        // Declara age, un valor usado por el flujo actual.
+        const age = Number(ageInput);
+        // Declara address, un valor usado por el flujo actual.
+        const address = String(formData.get("address") || "").trim();
+        // Declara description, un valor usado por el flujo actual.
+        const description = String(formData.get("description") || "").trim();
+        // Declara imageUrl, un valor usado por el flujo actual.
+        const imageUrl = String(formData.get("imageUrl") || "").trim();
+        // Conecta el control de añadir con la apertura del formulario.
+        const imageFile = document.getElementById("property-image-file").files[0];
+        // Declara controls, un valor usado por el flujo actual.
+        const controls = Array.from(elements.form.elements);
+        // Guarda el estado de los controles para restaurarlo al terminar.
+        const disabledStates = controls.map(control => control.disabled);
+        // Controla errores o garantiza la limpieza del proceso.
+        try {
+          // Evalúa una condición para escoger la acción adecuada.
+          if (!name) return setFormError("Escribe el nombre de la propiedad.");
+          // Evalúa una condición para escoger la acción adecuada.
+          if (!validTypes.includes(type)) return setFormError("Selecciona un tipo de propiedad válido.");
+          // Evalúa una condición para escoger la acción adecuada.
+          if (!Number.isFinite(area) || area <= 0) return setFormError("La superficie debe ser un número mayor que cero.");
+          // Evalúa una condición para escoger la acción adecuada.
+          if (!roomsInput || !Number.isInteger(rooms) || rooms < 0) return setFormError("Las habitaciones deben ser un número entero de cero o más.");
+          // Evalúa una condición para escoger la acción adecuada.
+          if (!ageInput || !Number.isInteger(age) || age < 0) return setFormError("La antigüedad debe ser un número entero de cero o más.");
+          // Evalúa una condición para escoger la acción adecuada.
+          if (imageUrl) {
+            // Controla errores o garantiza la limpieza del proceso.
+            try {
+              // Declara parsedUrl, un valor usado por el flujo actual.
+              const parsedUrl = new URL(imageUrl);
+              // Evalúa una condición para escoger la acción adecuada.
+              if (!["http:", "https:"].includes(parsedUrl.protocol)) throw new Error();
+            // Controla errores o garantiza la limpieza del proceso.
+            } catch {
+              // Devuelve el resultado o comunica el error al llamador.
+              return setFormError("La URL de la imagen debe comenzar con http:// o https://.");
+            // Cierra el bloque de control o función actual.
+            }
+          // Cierra el bloque de control o función actual.
+          }
+          // Evalúa una condición para escoger la acción adecuada.
+          if (imageFile && !imageFile.type.startsWith("image/")) return setFormError("Selecciona un archivo de imagen válido.");
+          // Evalúa una condición para escoger la acción adecuada.
+          if (imageFile && imageFile.size > MAX_IMAGE_SIZE) return setFormError("La imagen debe pesar 2 MB o menos para guardarse en este navegador.");
+
+          // Desactiva los campos mientras se espera el cálculo y el guardado.
+          controls.forEach(control => { control.disabled = true; });
+          // Evalúa una condición para escoger la acción adecuada.
+          if (estimateStatus === "calculating" && estimatePromise) await estimatePromise;
+          // Evalúa una condición para escoger la acción adecuada.
+          if (estimateStatus !== "error" &&
+              // Abre un bloque de código para la operación siguiente.
+              (estimateStatus !== "calculated" || estimateStale || !currentEstimate)) {
+            // Espera la operación asíncrona antes de continuar.
+            await calculateEstimateNow();
+          // Cierra el bloque de control o función actual.
+          }
+
+          // Declara image, un valor usado por el flujo actual.
+          let image = imageUrl;
+          // Evalúa una condición para escoger la acción adecuada.
+          if (imageFile) {
+            // Controla errores o garantiza la limpieza del proceso.
+            try {
+              // Ejecuta la llamada o finaliza la expresión actual.
+              image = await readImageFile(imageFile);
+            // Controla errores o garantiza la limpieza del proceso.
+            } catch (error) {
+              // Devuelve el resultado o comunica el error al llamador.
+              return setFormError(error.message);
+            // Cierra el bloque de control o función actual.
+            }
+          // Evalúa una condición para escoger la acción adecuada.
+          } else if (editingId && !imageUrl) {
+            // Declara current, un valor usado por el flujo actual.
+            const current = properties.find(item => item.id === editingId);
+            // Implementa el paso actual de la interacción del usuario.
+            image = current && current.image.startsWith("data:image/") ? current.image : "";
+          // Cierra el bloque de control o función actual.
+          }
+          // Busca si la propiedad actual ya existe para actualizarla en lugar de duplicarla.
+          const existing = properties.find(item => item.id === editingId);
+          // Declara savedEstimateStatus, un valor usado por el flujo actual.
+          const savedEstimateStatus = estimateStatus === "calculated" && !estimateStale
+            // Implementa el paso actual de la interacción del usuario.
+            ? "calculated"
+            // Implementa el paso actual de la interacción del usuario.
+            : currentEstimate ? (estimateStatus === "error" ? "error" : "stale")
+              // Implementa el paso actual de la interacción del usuario.
+              : estimateStatus === "error" ? "error" : "pending";
+          // Construye el registro que se persistirá en el inventario.
+          const property = {
+            // Implementa el paso actual de la interacción del usuario.
+            id: editingId || (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`),
+            // Implementa el paso actual de la interacción del usuario.
+            name, type, area, rooms, age, address, description, image,
+            // Implementa el paso actual de la interacción del usuario.
+            createdAt: existing ? existing.createdAt : new Date().toISOString(),
+            // Implementa el paso actual de la interacción del usuario.
+            priceEstimate: currentEstimate,
+            // Implementa el paso actual de la interacción del usuario.
+            estimateStatus: savedEstimateStatus
+          // Finaliza el objeto que reúne los controles de la página.
+          };
+          // Prepara la lista nueva reemplazando el registro editado o agregando uno.
+          const next = existing ? properties.map(item => item.id === editingId ? property : item) : [...properties, property];
+          // Evalúa una condición para escoger la acción adecuada.
+          if (persistProperties(next)) {
+            // Ejecuta la llamada o finaliza la expresión actual.
+            elements.formDialog.close();
+            // Dibuja el inventario y las estadísticas iniciales.
+            render();
+            // Evalúa una condición para escoger la acción adecuada.
+            if (savedEstimateStatus === "calculated") {
+              // Ejecuta la llamada o finaliza la expresión actual.
+              showToast(existing ? "Propiedad actualizada correctamente." : "Propiedad guardada correctamente.");
+            // Evalúa una condición para escoger la acción adecuada.
+            } else {
+              // Implementa el paso actual de la interacción del usuario.
+              showToast(
+                // Implementa el paso actual de la interacción del usuario.
+                `${existing ? "Propiedad actualizada" : "Propiedad guardada"}. No se pudo actualizar el precio; ${currentEstimate ? "se conserva la última estimación válida." : "puedes volver a calcularlo cuando el backend esté disponible."}`,
+                // Implementa el paso actual de la interacción del usuario.
+                true
+              // Cierra los argumentos de la llamada abierta anteriormente.
+              );
+            // Cierra el bloque de control o función actual.
+            }
+          // Cierra el bloque de control o función actual.
+          }
+        // Controla errores o garantiza la limpieza del proceso.
+        } finally {
+          // Desactiva los campos mientras se espera el cálculo y el guardado.
+          controls.forEach((control, index) => { control.disabled = disabledStates[index]; });
+        // Cierra el bloque de control o función actual.
+        }
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Construye y abre la vista detallada del inmueble.
+      function showDetails(property) {
+        // Declara estimate, un valor usado por el flujo actual.
+        const estimate = property.priceEstimate
+          // Implementa el paso actual de la interacción del usuario.
+          ? `<div class="detail-stat"><strong>${escapeHtml(formatCurrency(property.priceEstimate))} USD</strong><span>Precio estimado</span>${property.estimateStatus === "stale" || property.estimateStatus === "error" ? '<span class="estimate-stale">Podría estar desactualizada</span>' : ""}</div>`
+          // Implementa el paso actual de la interacción del usuario.
+          : `<div class="detail-stat"><strong>Sin estimación</strong><span>Precio estimado</span></div>`;
+        // Implementa el paso actual de la interacción del usuario.
+        elements.detailsContent.innerHTML = `<div class="dialog-head"><div><p class="eyebrow" style="margin:2px 0 0">Detalle de propiedad</p></div><button class="icon-button" type="button" data-close="details-dialog" aria-label="Cerrar detalles"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m18 6-12 12M6 6l12 12"/></svg></button></div>
+          <div class="details-image">${imageMarkup(property)}</div><!-- Contenido de la plantilla HTML que se inserta en la interfaz. -->
+          <div class="details-body"><span class="details-type">${escapeHtml(property.type)}</span><h2 id="details-title">${escapeHtml(property.name)}</h2><p class="details-address">${property.address ? escapeHtml(property.address) : "Sin dirección registrada"}</p><!-- Contenido de la plantilla HTML que se inserta en la interfaz. -->
+          <div class="details-stats"><div class="detail-stat"><strong>${formatNumber(property.area)} m²</strong><span>Superficie total</span></div><div class="detail-stat"><strong>${formatNumber(property.rooms, 0)}</strong><span>Habitaciones</span></div><div class="detail-stat"><strong>${formatNumber(property.age, 0)} ${property.age === 1 ? "año" : "años"}</strong><span>Antigüedad</span></div>${estimate}</div><!-- Contenido de la plantilla HTML que se inserta en la interfaz. -->
+          <div class="description-block"><h3>Descripción</h3><p>${property.description ? escapeHtml(property.description) : "No se ha añadido una descripción."}</p></div><!-- Contenido de la plantilla HTML que se inserta en la interfaz. -->
+          <div class="registered-date">Registrada el ${new Intl.DateTimeFormat("es-MX", { dateStyle: "long" }).format(new Date(property.createdAt))}</div><!-- Contenido de la plantilla HTML que se inserta en la interfaz. -->
+          <div class="dialog-actions"><button class="button secondary" type="button" data-close="details-dialog">Volver al inventario</button><button class="button" type="button" data-action="edit" data-id="${escapeHtml(property.id)}">Editar propiedad</button></div></div><!-- Contenido de la plantilla HTML que se inserta en la interfaz. -->`;
+        // Ejecuta la llamada o finaliza la expresión actual.
+        elements.detailsDialog.showModal();
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Pide confirmación antes de borrar y persistir el inventario.
+      function removeProperty(id) {
+        // Declara property, un valor usado por el flujo actual.
+        const property = properties.find(item => item.id === id);
+        // Evalúa una condición para escoger la acción adecuada.
+        if (!property || !window.confirm(`¿Eliminar "${property.name}"? Esta acción no se puede deshacer.`)) return;
+        // Evalúa una condición para escoger la acción adecuada.
+        if (persistProperties(properties.filter(item => item.id !== id))) {
+          // Dibuja el inventario y las estadísticas iniciales.
+          render();
+          // Ejecuta la llamada o finaliza la expresión actual.
+          showToast("Propiedad eliminada.");
+        // Cierra el bloque de control o función actual.
+        }
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Restablece búsqueda, filtros y orden del listado.
+      function clearFilters() {
+        // Implementa el paso actual de la interacción del usuario.
+        elements.search.value = "";
+        // Implementa el paso actual de la interacción del usuario.
+        elements.type.value = "";
+        // Implementa el paso actual de la interacción del usuario.
+        elements.rooms.value = "";
+        // Implementa el paso actual de la interacción del usuario.
+        elements.minArea.value = "";
+        // Implementa el paso actual de la interacción del usuario.
+        elements.maxArea.value = "";
+        // Implementa el paso actual de la interacción del usuario.
+        elements.age.value = "";
+        // Implementa el paso actual de la interacción del usuario.
+        elements.sort.value = "newest";
+        // Dibuja el inventario y las estadísticas iniciales.
+        render();
+      // Cierra el bloque de control o función actual.
+      }
+
+      // Conecta el control de añadir con la apertura del formulario.
+      document.getElementById("add-property").addEventListener("click", () => openForm());
+      // Conecta el envío del formulario con su validación y guardado.
+      elements.form.addEventListener("submit", handleSave);
+      // Conecta el botón con el cálculo manual inmediato.
+      elements.calculatePrice.addEventListener("click", () => calculateEstimateNow());
+      // Programa la actualización cuando cambia un dato usado por el modelo.
+      ["area", "rooms", "age"].forEach(name => {
+        // Ejecuta la llamada o finaliza la expresión actual.
+        elements.form.elements[name].addEventListener("input", scheduleEstimate);
+      // Cierra el bloque de control o función actual.
+      });
+      // Abre un bloque de código para la operación siguiente.
+      [elements.search, elements.type, elements.rooms, elements.minArea, elements.maxArea, elements.age, elements.sort].forEach(control => {
+        // Ejecuta la llamada o finaliza la expresión actual.
+        control.addEventListener(control === elements.search || control.type === "number" ? "input" : "change", render);
+      // Cierra el bloque de control o función actual.
+      });
+      // Conecta el control de añadir con la apertura del formulario.
+      document.getElementById("clear-filters").addEventListener("click", clearFilters);
+      // Delegación de eventos para acciones de las tarjetas y cierres de diálogos.
+      document.addEventListener("click", event => {
+        // Declara closeButton, un valor usado por el flujo actual.
+        const closeButton = event.target.closest("[data-close]");
+        // Evalúa una condición para escoger la acción adecuada.
+        if (closeButton) {
+          // Conecta el control de añadir con la apertura del formulario.
+          document.getElementById(closeButton.dataset.close).close();
+          // Implementa el paso actual de la interacción del usuario.
+          return;
+        // Cierra el bloque de control o función actual.
+        }
+        // Declara actionButton, un valor usado por el flujo actual.
+        const actionButton = event.target.closest("[data-action]");
+        // Evalúa una condición para escoger la acción adecuada.
+        if (!actionButton) return;
+        // Declara {, un valor usado por el flujo actual.
+        const { action, id } = actionButton.dataset;
+        // Evalúa una condición para escoger la acción adecuada.
+        if (action === "add") openForm();
+        // Evalúa una condición para escoger la acción adecuada.
+        if (action === "clear-filters") clearFilters();
+        // Evalúa una condición para escoger la acción adecuada.
+        if (action === "delete") removeProperty(id);
+        // Evalúa una condición para escoger la acción adecuada.
+        if (action === "details") {
+          // Declara property, un valor usado por el flujo actual.
+          const property = properties.find(item => item.id === id);
+          // Evalúa una condición para escoger la acción adecuada.
+          if (property) showDetails(property);
+        // Cierra el bloque de control o función actual.
+        }
+        // Evalúa una condición para escoger la acción adecuada.
+        if (action === "edit") {
+          // Declara property, un valor usado por el flujo actual.
+          const property = properties.find(item => item.id === id);
+          // Evalúa una condición para escoger la acción adecuada.
+          if (property) {
+            // Evalúa una condición para escoger la acción adecuada.
+            if (elements.detailsDialog.open) elements.detailsDialog.close();
+            // Ejecuta la llamada o finaliza la expresión actual.
+            openForm(property);
+          // Cierra el bloque de control o función actual.
+          }
+        // Cierra el bloque de control o función actual.
+        }
+      // Cierra el bloque de control o función actual.
+      });
+      // Abre un bloque de código para la operación siguiente.
+      [elements.formDialog, elements.detailsDialog].forEach(dialog => {
+        // Abre un bloque de código para la operación siguiente.
+        dialog.addEventListener("click", event => {
+          // Evalúa una condición para escoger la acción adecuada.
+          if (event.target === dialog) dialog.close();
+        // Cierra el bloque de control o función actual.
+        });
+      // Cierra el bloque de control o función actual.
+      });
+      // Abre un bloque de código para la operación siguiente.
+      elements.formDialog.addEventListener("close", () => {
+        // Ejecuta la llamada o finaliza la expresión actual.
+        clearTimeout(estimateTimer);
+        // Evalúa una condición para escoger la acción adecuada.
+        if (estimateController) estimateController.abort();
+        // Implementa el paso actual de la interacción del usuario.
+        estimateController = null;
+        // Implementa el paso actual de la interacción del usuario.
+        estimateSequence += 1;
+        // Implementa el paso actual de la interacción del usuario.
+        estimatePromise = null;
+      // Cierra el bloque de control o función actual.
+      });
+      // Carga los datos guardados al iniciar la página.
+      loadProperties();
+      // Dibuja el inventario y las estadísticas iniciales.
+      render();
+    // Cierra el bloque de control o función actual.
+    })();
+  <!-- Cierra el bloque de JavaScript ejecutado en el navegador. -->
+  </script>
+<!-- Agrupa o presenta contenido de la interfaz. -->
+</body>
+<!-- Agrupa o presenta contenido de la interfaz. -->
+</html>
